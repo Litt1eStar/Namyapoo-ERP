@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-    product_id: {
-        type: mongoose.Schema.Types.ObjectId,
+    product_name:{
+        type: String,
         required: true
+    },
+    margin_per_unit:{
+        type: Number,
+        required: true,
+        default: 0
     },
     quantity: {
         type: Number,

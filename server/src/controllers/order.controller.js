@@ -1,17 +1,17 @@
 import Order from '../models/order.model.js'
 
 export const createOrder = async(req, res) => {
-    const { product_id, quantity } = req.body;
+    const { product_name, margin_per_unit, quantity } = req.body;
     const {workspace_id} = req.params;
     
-    if(!product_id || !quantity)
+    if(!product_name || !margin_per_unit || !quantity)
         return res.status(400).json({error: "Please complete all field"})
 
     if(!workspace_id) 
         return res.status(400).json({error: "Workspace not found"})
 
     try {
-        const order = await Order.create({ product_id, quantity, workspace_id });
+        const order = await Order.create({ product_name, margin_per_unit, quantity, workspace_id });
         if(!order)
             return res.status(400).json({error: "Failed to create order"})
 
