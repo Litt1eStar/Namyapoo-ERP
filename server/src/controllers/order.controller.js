@@ -1,39 +1,44 @@
-import Order from '../models/order.model.js'
+import Order from "../models/order.model.js";
 
-export const createOrder = async(req, res) => {
-    const { product_name, margin_per_unit, quantity } = req.body;
-    const {workspace_id} = req.params;
-    
-    if(!product_name || !margin_per_unit || !quantity)
-        return res.status(400).json({error: "Please complete all field"})
+export const createOrder = async (req, res) => {
+  const { product_name, margin_per_unit, quantity } = req.body;
+  const { workspace_id } = req.params;
 
-    if(!workspace_id) 
-        return res.status(400).json({error: "Workspace not found"})
+  if (!product_name || !margin_per_unit || !quantity)
+    return res.status(400).json({ error: "Please complete all field" });
 
-    try {
-        const order = await Order.create({ product_name, margin_per_unit, quantity, workspace_id });
-        if(!order)
-            return res.status(400).json({error: "Failed to create order"})
+  if (!workspace_id)
+    return res.status(400).json({ error: "Workspace not found" });
 
-        res.status(200).json(order)
-    } catch (error) {
-        res.status(500).json({error: error.message});
-    }
-}
+  try {
+    const order = await Order.create({
+      product_name,
+      margin_per_unit,
+      quantity,
+      totalMargin: margin_per_unit * quantity,
+      workspace_id,
+    });
+    if (!order)
+      return res.status(400).json({ error: "Failed to create order" });
 
-export const getAllOrder = async(req,res)=>{
-    const { workspace_id } = req.params;
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-    if(!workspace_id) 
-        return res.status(400).json({error: "Workspace not found"})
+export const getAllOrder = async (req, res) => {
+  const { workspace_id } = req.params;
 
-    try {
-        const orders = await Order.find({ workspace_id });
-        if(!orders)
-            return res.status(400).json({error: "Failed to get orders"})
+  if (!workspace_id)
+    return res.status(400).json({ error: "Workspace not found" });
 
-        res.status(200).json(orders);
-    } catch (error) {
-        res.status(500).json({error: error.message});
-    }
-}
+  try {
+    const orders = await Order.find({ workspace_id });
+    if (!orders) return res.status(400).json({ error: "Failed to get orders" });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

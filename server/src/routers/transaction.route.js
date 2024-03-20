@@ -6,6 +6,6 @@ import { createTransactoin, getTransaction } from '../controllers/transaction.co
 const router = express.Router();
 
 router.post('/create', verifyToken, createTransactoin)
-router.get('/:id', verifyToken, getTransaction)
+router.get('/getTransaction', verifyToken, getTransaction)
 
 export default router;

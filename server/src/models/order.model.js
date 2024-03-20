@@ -15,6 +15,11 @@ const schema = new mongoose.Schema({
         required: true,
         default: 0
     },
+    totalMargin:{
+        type: Number,
+        required: true,
+        default: 0
+    },
     workspace_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
