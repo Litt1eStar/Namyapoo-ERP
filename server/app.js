@@ -6,6 +6,7 @@ import { connectToDb } from "./connectToDb.js";
 import authRoute from './src/routers/auth.route.js'
 import workspaceRoute from './src/routers/workspace.route.js'
 import productRoute from './src/routers/product.route.js'
+import orderRoute from './src/routers/order.route.js'
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use(`/api/auth`, authRoute)
 app.use(`/api/workspace`, workspaceRoute)
 app.use(`/api/product`, productRoute)
+app.use(`/api/order`, orderRoute)
 
 app.listen(process.env.PORT, () => {
   connectToDb();
