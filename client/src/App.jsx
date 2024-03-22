@@ -1,12 +1,13 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { useAuthContext } from "./context/AuthContext";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import { useAuthContext } from "./context/AuthContext";
 import Workspace from "./pages/Workspace";
 import Transaction from "./pages/Transaction";
+import Profile from "./pages/Profile";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/signup" element={authUser ? <Navigate to='/' /> : <Signup />} />
         <Route path="/workspace/:workspace_id" element={authUser ? <Workspace /> : <Navigate to='/login' />} />
         <Route path="/transaction/:transaction_id" element={authUser ? <Transaction /> : <Navigate to='/login' />} />
+        <Route path="/profile" element={authUser ? <Profile /> : <Navigate to='/login' />} />
       </Routes>
       <Toaster toastOptions={{
         duration: 2000

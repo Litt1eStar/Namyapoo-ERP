@@ -22,7 +22,6 @@ export const AuthContextProvider = ({ children }) => {
             toast.error(error.message)
         }
     }
-
     console.log(authUser)
     useEffect(()=>{
         getUser();
