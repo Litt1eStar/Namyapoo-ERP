@@ -1,7 +1,8 @@
 import Order from "../models/order.model.js";
+import Product from '../models/product.model.js'
 
 export const createOrder = async (req, res) => {
-  const { product_name, margin_per_unit, quantity } = req.body;
+  const { product_id ,product_name, margin_per_unit, quantity } = req.body;
   const { workspace_id } = req.params;
 
   if (!product_name || !margin_per_unit || !quantity)
@@ -11,7 +12,16 @@ export const createOrder = async (req, res) => {
     return res.status(400).json({ error: "Workspace not found" });
 
   try {
+    const product = await Product.findById(product_id)
+    if(!product)
+      return res.status(400).json({error: "Product not found"});
+
+    const enough = (product.amount - quantity) >= 0;
+    if(!enough)
+      return res.status(400).json({error: "Product in Inventory is not enough"})
+    
     const order = await Order.create({
+      product_id,
       product_name,
       margin_per_unit,
       quantity,
@@ -20,7 +30,7 @@ export const createOrder = async (req, res) => {
     });
     if (!order)
       return res.status(400).json({ error: "Failed to create order" });
-
+    console.log(order)
     res.status(200).json(order);
   } catch (error) {
     res.status(500).json({ error: error.message });

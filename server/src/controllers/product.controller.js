@@ -39,6 +39,7 @@ export const getAllProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 export const editProduct = async (req, res) => {
   const { id } = req.params;
   const { n_name, n_margin } = req.body;
@@ -93,3 +94,14 @@ export const updateProductAmount = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getProductById = async(req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findById(id);
+    res.json(product)
+  } catch (error) {
+    
+  }
+}

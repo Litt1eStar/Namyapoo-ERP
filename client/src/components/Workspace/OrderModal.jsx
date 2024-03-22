@@ -53,6 +53,7 @@ const OrderModal = ({ workspace_id, fetchOrderFromDb }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          product_id: order._id,
           product_name: order.name,
           margin_per_unit: order.margin_per_unit,
           quantity: Number(quantity),
