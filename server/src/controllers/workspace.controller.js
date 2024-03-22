@@ -38,6 +38,21 @@ export const getAllWorkspace = async (req, res) => {
   }
 };
 
+export const getWorkspaceById = async(req, res) => {
+  const {workspace_id} = req.params;
+
+  if(!workspace_id) return;
+
+  try {
+    const workspace = await Workspace.findById(workspace_id);
+    if(!workspace)
+      return res.status(400).json({error: "Workspace is not existed on database"})
+
+      res.status(200).json(workspace)
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
+}
 //UPDATE STATUS OF WORKSPACE
 export const updateStatus = async (req, res) => {
     const { id } = req.params;

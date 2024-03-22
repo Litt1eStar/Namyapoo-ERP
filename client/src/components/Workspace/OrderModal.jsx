@@ -9,9 +9,11 @@ import {
   Select,
   Stack,
 } from "@mui/material";
+import HomeIcon from '@mui/icons-material/Home';
 import Modal from "@mui/material/Modal";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -30,6 +32,8 @@ const OrderModal = ({ workspace_id, fetchOrderFromDb }) => {
   const [order, setOrder] = useState({});
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState("");
+
+  const navigate = useNavigate();
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -79,7 +83,10 @@ const OrderModal = ({ workspace_id, fetchOrderFromDb }) => {
   }, [open]);
   return (
     <>
-      <Button onClick={handleOpen} sx={{ marginLeft: "90%" }}>
+      <Button variant="text" color="inherit" onClick={()=>navigate('/')} sx={{ width: '100%', marginBottom: '20px'}}>
+        <HomeIcon />
+      </Button>
+      <Button variant="outlined" color="info" onClick={handleOpen} sx={{ width: '100%'}}>
         Create
       </Button>
       <Modal

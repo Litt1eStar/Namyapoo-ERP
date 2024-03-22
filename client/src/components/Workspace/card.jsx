@@ -27,6 +27,28 @@ const CustomCard = ({ workspace_name, status, workspace_id, fetchWorkspaceFromDB
             toast.error(error.message);
         }
     }
+
+    const handleClick = async() => {
+      try {
+        const res = await fetch(`/api/workspace/${workspace_id}`);
+        const workspace = await res.json();
+        if(workspace.error) 
+          throw new Error(workspace.error)
+
+        if(workspace.status){
+          const transaction_res = await fetch(`/api/transaction/getFrom/${workspace._id}`);
+          const transaction = await transaction_res.json();
+          if(transaction.error)
+            throw new Error(transaction.error)
+          navigate(`/transaction/${transaction._id}`)
+        }
+        else if(!workspace.status)
+          navigate(`/workspace/${workspace_id}`)
+        
+      } catch (error) {
+        toast.error(error.message)
+      }
+    }
   return (
     <>
       <CardContent>
@@ -50,7 +72,7 @@ const CustomCard = ({ workspace_name, status, workspace_id, fetchWorkspaceFromDB
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="medium" onClick={()=>navigate(`/workspace/${workspace_id}`)}>เปิด</Button>
+        <Button size="medium" onClick={handleClick}>เปิด</Button>
       </CardActions>
     </>
   );

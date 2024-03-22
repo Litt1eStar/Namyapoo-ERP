@@ -25,7 +25,7 @@ const Workspace = () => {
   const handleClick = async () => {
     try {
       const transactionData = orders.map((order) => ({ order_id: order._id }));
-      const res = await fetch(`/api/transaction/create`, {
+      const res = await fetch(`/api/transaction/create/${workspace_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,6 +36,13 @@ const Workspace = () => {
       if(data.error)
         throw new Error(data.error)
 
+      const workspace_res = await fetch(`/api/workspace/updateStatus/${workspace_id}`, {
+        method: "PUT"
+      })
+      const status = await workspace_res.json();
+      if(status.error)
+        throw new Error(status.error)
+      
       navigate(`/transaction/${data._id}`);
     } catch (error) {
       toast.error(error.message)

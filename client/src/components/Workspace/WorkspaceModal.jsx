@@ -25,7 +25,7 @@ const WorkspaceModal = ({createWorkspace, setForm, form}) => {
   }
   return (
     <>
-      <Button onClick={handleOpen} sx={{ marginLeft: "90%" }}>
+      <Button variant="contained" color="info" onClick={handleOpen} sx={{ width: '100%'}}>
         Create
       </Button>
       <Modal

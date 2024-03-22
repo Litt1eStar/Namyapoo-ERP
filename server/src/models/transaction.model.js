@@ -12,6 +12,10 @@ const schema = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
+    },
+    workspace_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     }
 }, {timestamps: true})
 

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import {
-  Box,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -12,11 +12,12 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import HomeIcon from '@mui/icons-material/Home';
 
 const Transaction = () => {
   const { transaction_id } = useParams();
   const [transactions, setTransactions] = useState(null);
-
+  const navigate = useNavigate();
   const fetchTransactoin = async () => {
     try {
       const res = await fetch(`/api/transaction/${transaction_id}`);
@@ -34,6 +35,14 @@ const Transaction = () => {
   }, []);
   return (
     <>
+      <Button
+        variant="text"
+        color="inherit"
+        onClick={() => navigate("/")}
+        sx={{ width: "100%", marginBottom: "40px" }}
+      >
+        <HomeIcon />
+      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

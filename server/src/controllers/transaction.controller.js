@@ -4,6 +4,7 @@ import { lineNotify } from "../function/lineNotify.js";
 
 export const createTransactoin = async (req, res) => {
   const user_id = req.user.id;
+  const {workspace_id} = req.params;
   const orders = req.body;
 
   try {
@@ -27,6 +28,7 @@ export const createTransactoin = async (req, res) => {
       orders: orderResults,
       totalMargin: total,
       user_id,
+      workspace_id
     });
     if (!newTransaction)
       return res.status(400).json({ error: "Failed to crate Transaction" });
@@ -59,6 +61,22 @@ export const getTransactionById = async(req, res) => {
 
   try {
     const transaction = await Transaction.findById(id);
+    if(!transaction) 
+      return res.status(400).json({error: "Transaction not found"})
+    
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(500).json({error: error.message})
+  }
+}
+
+export const getTransactionByWorkspaceId = async(req, res) => {
+  const { workspace_id } = req.params;
+
+  if(!workspace_id) return res.status(500).json({error: "Internal server error"})
+
+  try {
+    const transaction = await Transaction.findOne({ workspace_id });
     if(!transaction) 
       return res.status(400).json({error: "Transaction not found"})
     
