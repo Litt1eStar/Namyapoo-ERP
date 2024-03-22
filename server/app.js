@@ -9,6 +9,7 @@ import workspaceRoute from './src/routers/workspace.route.js'
 import productRoute from './src/routers/product.route.js'
 import orderRoute from './src/routers/order.route.js'
 import transactionRoute from './src/routers/transaction.route.js'
+import userRoute from './src/routers/user.route.js'
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ app.use(`/api/workspace`, workspaceRoute)
 app.use(`/api/product`, productRoute)
 app.use(`/api/order`, orderRoute)
 app.use(`/api/transaction`, transactionRoute)
-
+app.use(`/api/user`, userRoute)
 app.get("*", (req, res)=>{
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"))
 })
