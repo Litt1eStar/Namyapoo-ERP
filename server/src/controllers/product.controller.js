@@ -12,6 +12,7 @@ export const createProduct = async (req, res) => {
   try {
     const user = await User.findOne({ _id: user_id });
     if (!user) return res.status(400).json({ error: "User not found" });
+
     const existed = await Product.findOne({ name, user_id });
     if (existed) return res.status(400).json({ error: "Data already existed" });
 
@@ -65,6 +66,29 @@ export const deleteProduct = async (req, res) => {
     if (!deleted)
       return res.status(400).json({ error: "Failed to delete product" });
     res.status(200).json({ message: "Successfully delete product" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateProductAmount = async (req, res) => {
+  const { type, newAmount } = req.body;
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+    switch (type) {
+      case "import":
+        product.amount += newAmount;
+        break;
+      case "export":
+        product.amount -= newAmount;
+        break;
+      default:
+        return res.status(400).json({ error: "Invalid operation type" });
+    }
+    await product.save();
+
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

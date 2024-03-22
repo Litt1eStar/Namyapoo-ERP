@@ -10,6 +10,10 @@ const schema = new mongoose.Schema({
         required: true,
         default: 0
     },
+    amount:{
+        type: Number,
+        default: 0
+    },
     user_id:{
         type: mongoose.Schema.Types.ObjectId,
         required: true
