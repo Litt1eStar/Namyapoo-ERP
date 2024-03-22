@@ -1,5 +1,6 @@
 import Order from "../models/order.model.js";
 import Transaction from "../models/transaction.model.js";
+import { lineNotify } from "../function/lineNotify.js";
 
 export const createTransactoin = async (req, res) => {
   const user_id = req.user.id;
@@ -30,6 +31,7 @@ export const createTransactoin = async (req, res) => {
     if (!newTransaction)
       return res.status(400).json({ error: "Failed to crate Transaction" });
 
+    await lineNotify(`Create New Transaction \n ต้นทุนทั้งหมด: ${newTransaction.totalMargin} บาท`)
     res.status(200).json(newTransaction);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -49,3 +51,19 @@ export const getTransaction = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getTransactionById = async(req, res) => {
+  const { id } = req.params;
+
+  if(!id) return res.status(500).json({error: "Internal server error"})
+
+  try {
+    const transaction = await Transaction.findById(id);
+    if(!transaction) 
+      return res.status(400).json({error: "Transaction not found"})
+    
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(500).json({error: error.message})
+  }
+}
