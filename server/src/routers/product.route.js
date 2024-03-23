@@ -6,7 +6,7 @@ import {
   getAllProduct,
   editProduct,
   deleteProduct,
-  updateProductAmount,
+  updateProductAmountByType,
   getProductById,
 } from "../controllers/product.controller.js";
 
@@ -16,7 +16,7 @@ router.post("/create", verifyToken, createProduct);
 router.get("/getAllProduct", verifyToken, getAllProduct);
 router.get("/:id", getProductById);
 router.put("/edit/:id", editProduct);
-router.put("/updateAmount/:id", updateProductAmount)
+router.put("/updateProductAmountByType/:id", updateProductAmountByType)
 router.delete("/delete/:id", deleteProduct);
 
 export default router;

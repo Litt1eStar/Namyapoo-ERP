@@ -51,7 +51,10 @@ const Home = () => {
 
   return (
     <>
-      <Button sx={{ width: "100%" }} onClick={()=>navigate('/profile')}>{authUser.username}</Button>
+      <Stack width='100%' direction='row'>
+        <Button color="inherit" sx={{ width: "40%"}} onClick={()=>navigate('/profile')}>{authUser.username}</Button>
+        <Button sx={{ width: "50%" }} onClick={()=>navigate('/inventory')}>Inventory Manager</Button>
+      </Stack>
       <Divider sx={{ marginBottom: 3, backgroundColor: "lightgray" }}></Divider>
       <WorkspaceModal
         createWorkspace={createWorkspace}

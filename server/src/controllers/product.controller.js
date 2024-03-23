@@ -42,7 +42,7 @@ export const getAllProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
   const { id } = req.params;
-  const { n_name, n_margin } = req.body;
+  const { n_name, n_margin, n_amount } = req.body;
   if (!id)
     return res.status(400).json({ error: "Invalid Data | product id is null" });
 
@@ -51,6 +51,7 @@ export const editProduct = async (req, res) => {
     if (!product) return res.status(400).json({ error: "Product not found" });
     product.name = n_name;
     product.margin_per_unit = n_margin;
+    product.amount = n_amount;
     await product.save();
     res.status(200).json(product);
   } catch (error) {
@@ -72,7 +73,7 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-export const updateProductAmount = async (req, res) => {
+export const updateProductAmountByType = async (req, res) => {
   const { type, newAmount } = req.body;
   const { id } = req.params;
   try {
