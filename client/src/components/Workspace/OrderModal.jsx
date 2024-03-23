@@ -38,11 +38,15 @@ const OrderModal = ({ workspace_id, fetchOrderFromDb }) => {
   const handleClose = () => {
     setOpen(false);
   }
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     setOpen(false);
     setQuantity("");
-    fetchOrderFromDb();
-    createOrder();
+    try {
+      await createOrder();
+      await fetchOrderFromDb();
+    } catch (error) {
+      toast.error(error.message)
+    }
   };
 
   const createOrder = async () => {

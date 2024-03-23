@@ -71,7 +71,7 @@ const Inventory = () => {
         body: JSON.stringify({
           n_name: modalProductName,
           n_margin: Number(modelProductMargin),
-          n_amoung: Number(modalProductAmount),
+          n_amount: Number(modalProductAmount),
         }),
       });
       const data = await res.json();

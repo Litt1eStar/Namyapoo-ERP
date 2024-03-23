@@ -39,7 +39,7 @@ const Home = () => {
       if (data.error) {
         throw new Error(data.error);
       }
-      fetchWorkspaceFromDB();
+      await fetchWorkspaceFromDB();
     } catch (error) {
       toast.error(error.message);
     }
