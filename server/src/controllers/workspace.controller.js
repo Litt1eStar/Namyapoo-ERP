@@ -2,6 +2,7 @@ import Workspace from "../models/workspace.model.js";
 import User from "../models/user.model.js";
 import { createNewWorkspace } from "../function/workspace/createNewWorkspace.js";
 import { getAllWorkspaceFromDb } from "../function/workspace/getAllWorkspaceFromDb.js";
+import { _getWorkspaceById } from "../function/workspace/getWorkspaceById.js";
 
 // CREATE NEW WORKSPACE
 export const createWorkspace = async (req, res) => {
@@ -40,10 +41,7 @@ export const getWorkspaceById = async(req, res) => {
   if(!workspace_id) return;
 
   try {
-    const workspace = await Workspace.findById(workspace_id);
-    if(!workspace)
-      return res.status(400).json({error: "Workspace is not existed on database"})
-
+      const workspace = await _getWorkspaceById(workspace_id, res);
       res.status(200).json(workspace)
   } catch (error) {
     res.status(500).json({error: error.message});
