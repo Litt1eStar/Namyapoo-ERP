@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import { createNewWorkspace } from "../function/workspace/createNewWorkspace.js";
 import { getAllWorkspaceFromDb } from "../function/workspace/getAllWorkspaceFromDb.js";
 import { _getWorkspaceById } from "../function/workspace/getWorkspaceById.js";
+import { _updateStatus } from "../function/workspace/updateStatus.js";
 
 // CREATE NEW WORKSPACE
 export const createWorkspace = async (req, res) => {
@@ -54,10 +55,7 @@ export const updateStatus = async (req, res) => {
     if(!id) return res.status(400).json({error: "Invalid Data | workspace id is invalid"})
 
     try {
-        const workspace = await Workspace.findOne({ _id: id })
-        if(!workspace) return res.status(400).json({error: "workspace not found"})
-        workspace.status = !workspace.status;
-        await workspace.save();
+        const workspace = await _updateStatus(id, res)
         res.status(200).json({updated: workspace})
     } catch (error) {
         res.status(500).json({ error: error.message });
