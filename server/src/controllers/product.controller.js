@@ -2,6 +2,7 @@ import { create } from "../function/product/create.js";
 import { _deleteProduct } from "../function/product/delete.js";
 import { edit } from "../function/product/edit.js";
 import { getAll } from "../function/product/getAll.js";
+import { _updateAmountByType } from "../function/product/updateAmountByType.js";
 import Product from "../models/product.model.js";
 
 export const createProduct = async (req, res) => {
@@ -62,19 +63,7 @@ export const updateProductAmountByType = async (req, res) => {
   const { type, newAmount } = req.body;
   const { id } = req.params;
   try {
-    const product = await Product.findById(id);
-    switch (type) {
-      case "import":
-        product.amount += newAmount;
-        break;
-      case "export":
-        product.amount -= newAmount;
-        break;
-      default:
-        return res.status(400).json({ error: "Invalid operation type" });
-    }
-    await product.save();
-
+    const product = await _updateAmountByType(id, newAmount, type, res);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
