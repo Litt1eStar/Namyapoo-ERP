@@ -1,26 +1,19 @@
 import User from "../models/user.model.js"
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { _signup } from "../function/user/signup.js";
 
 export const signup = async(req, res) => {
     const { username, password, confirmPassword } = req.body;
 
-    if(!username || !password || !confirmPassword){
+    if(!username || !password || !confirmPassword)
         return res.status(400).json({error: "Please complete all field"})
-    }
 
-    if(password !== confirmPassword){
+    if(password !== confirmPassword)
         return res.status(400).json({error: "Password is not match"});
-    }
-
+    
     try {
-        const existed = await User.findOne({ username })
-        if(existed) return res.status(400).json({error: "Invalid Data | This user already in our database"});
-
-        const salt = await bcryptjs.genSalt(10)
-        const hashed = await bcryptjs.hash(password, salt)
-        const newUser = await User.create({ username, password: hashed})
-
+        await _signup(username, password);
         res.status(200).json({message: "User created"});
     } catch (error) {
         res.status(500).json({error: error.message});
