@@ -1,17 +1,17 @@
 import Workspace from "../models/workspace.model.js";
 import User from "../models/user.model.js";
+import { createNewWorkspace } from "../function/workspace/createNewWorkspace.js";
 
 // CREATE NEW WORKSPACE
 export const createWorkspace = async (req, res) => {
   const user_id = req.user.id;
   const { name } = req.body;
 
-  if (!user_id) return res.status(401).json({ error: "Unauthorize" });
+  if (!user_id) 
+    return res.status(401).json({ error: "Unauthorize" });
 
   try {
-    const newWorkspace = await Workspace.create({ name, user_id });
-    if (!newWorkspace)
-      return res.status(400).json({ error: "Failed to create Workspace" });
+    const newWorkspace = await createNewWorkspace(name, user_id);
     res.status(200).json(newWorkspace);
   } catch (error) {
     res.status(500).json({ error: error.message });
