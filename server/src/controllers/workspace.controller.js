@@ -4,6 +4,7 @@ import { createNewWorkspace } from "../function/workspace/createNewWorkspace.js"
 import { getAllWorkspaceFromDb } from "../function/workspace/getAllWorkspaceFromDb.js";
 import { _getWorkspaceById } from "../function/workspace/getWorkspaceById.js";
 import { _updateStatus } from "../function/workspace/updateStatus.js";
+import { _deleteWorkspace } from "../function/workspace/deleteWorkspace.js";
 
 // CREATE NEW WORKSPACE
 export const createWorkspace = async (req, res) => {
@@ -69,8 +70,7 @@ export const deleteWorkspace = async (req, res) => {
     if(!id) return res.status(400).json({error: "Invalid Data | workspace id is invalid"})
 
     try {
-        const deleted = await Workspace.findOneAndDelete({ _id: id});
-        if(!deleted) return res.status(400).json({error: "Failed to delete workspace"})
+        await _deleteWorkspace(id, res);
         res.status(200).json({message: "Succesfully delete workspace"});
     } catch (error) {
         res.status(500).json({ error: error.message });
