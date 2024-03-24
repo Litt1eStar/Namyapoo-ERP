@@ -1,6 +1,6 @@
 import { create } from "../function/product/create.js";
+import { getAll } from "../function/product/getAll.js";
 import Product from "../models/product.model.js";
-import User from "../models/user.model.js";
 
 export const createProduct = async (req, res) => {
   const user_id = req.user.id;
@@ -24,9 +24,7 @@ export const getAllProduct = async (req, res) => {
   if (!user_id) return res.status(401).json({ error: "Unauthorize" });
 
   try {
-    const products = await Product.find({ user_id });
-    if (!products)
-      return res.status(400).json({ error: "Failed to get all product" });
+    const products = await getAll(user_id);
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });
