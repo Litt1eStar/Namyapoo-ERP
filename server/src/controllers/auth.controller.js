@@ -1,5 +1,5 @@
-import { _login } from "../function/user/login.js";
-import { _signup } from "../function/user/signup.js";
+import { _login } from "../function/auth/login.js";
+import { _signup } from "../function/auth/signup.js";
 
 export const signup = async(req, res) => {
     const { username, password, confirmPassword } = req.body;
