@@ -17,7 +17,8 @@ export const createOrder = async (req, res) => {
       product_name,
       margin_per_unit,
       quantity,
-      workspace_id
+      workspace_id, 
+      res
     );
     res.status(200).json(order);
   } catch (error) {
