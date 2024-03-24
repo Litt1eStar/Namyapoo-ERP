@@ -105,7 +105,9 @@ const Inventory = () => {
             {products.map((product) => (
               <TableRow
                 key={product._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 }, ":hover": {
+                  border: '2px solid black'                  
+                }}}
               >
                 <TableCell component="th" scope="row">
                   {product.name}

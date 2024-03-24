@@ -1,7 +1,6 @@
-import Order from "../models/order.model.js";
-import Product from "../models/product.model.js";
+import { create } from "../function/transaction/create.js";
+import { _getTransaction } from "../function/transaction/getTransaction.js";
 import Transaction from "../models/transaction.model.js";
-import { lineNotify } from "../function/lineNotify.js";
 
 export const createTransactoin = async (req, res) => {
   const user_id = req.user.id;
@@ -9,47 +8,7 @@ export const createTransactoin = async (req, res) => {
   const orders = req.body;
 
   try {
-    const orderPromises = orders.map(async (order) => {
-      const orderInfo = await Order.findById(order.order_id);
-      return orderInfo;
-    });
-    const orderResults = await Promise.all(orderPromises);
-    console.log(orderResults);
-    const productPromises = orderResults.map(async (order) => {
-      const product = await Product.findByIdAndUpdate(
-        order.product_id,
-        { $inc: { amount: -order.quantity } },
-        { new: true }
-      );
-      return product;
-    });
-
-    const productResults = await Promise.all(productPromises);
-    console.log(productResults);
-    const total = orderResults.reduce(
-      (acc, order) => acc + order.totalMargin,
-      0
-    );
-
-    if (!orderResults)
-      return res
-        .status(400)
-        .json({ error: "Failed to get order to make transaction" });
-
-    const newTransaction = await Transaction.create({
-      orders: orderResults,
-      totalMargin: total,
-      user_id,
-      workspace_id,
-    });
-    if (!newTransaction)
-      return res.status(400).json({ error: "Failed to crate Transaction" });
-
-    //Updat Inventory Amoutn
-
-    await lineNotify(
-      `Create New Transaction \n ต้นทุนทั้งหมด: ${newTransaction.totalMargin} บาท`
-    );
+    const newTransaction = await create(orders, workspace_id, user_id, res);
     res.status(200).json(newTransaction);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -60,10 +19,7 @@ export const getTransaction = async (req, res) => {
   const user_id = req.user.id;
 
   try {
-    const transactions = await Transaction.find({ user_id });
-    if (!transactions)
-      return res.status(400).json({ error: "Transaction not found" });
-
+    const transactions = await _getTransaction(user_id, res);
     res.status(200).json(transactions);
   } catch (error) {
     res.status(500).json({ error: error.message });
