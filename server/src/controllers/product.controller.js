@@ -1,4 +1,5 @@
 import { create } from "../function/product/create.js";
+import { _deleteProduct } from "../function/product/delete.js";
 import { edit } from "../function/product/edit.js";
 import { getAll } from "../function/product/getAll.js";
 import Product from "../models/product.model.js";
@@ -50,9 +51,7 @@ export const deleteProduct = async (req, res) => {
     return res.status(400).json({ error: "Invalid Data | product id is null" });
 
   try {
-    const deleted = await Product.findOneAndDelete({ _id: id });
-    if (!deleted)
-      return res.status(400).json({ error: "Failed to delete product" });
+    await _deleteProduct(id, res);
     res.status(200).json({ message: "Successfully delete product" });
   } catch (error) {
     res.status(500).json({ error: error.message });
