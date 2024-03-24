@@ -1,7 +1,7 @@
 import User from "../../models/user.model.js";
 import bcryptjs from 'bcryptjs'
 
-export const _signup = async (username, password) => {
+export const _signup = async (username, password, res) => {
   const existed = await User.findOne({ username });
   if (existed)
     return res

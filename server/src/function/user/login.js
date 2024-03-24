@@ -1,7 +1,7 @@
 import User from "../../models/user.model.js";
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-export const _login = async(username, password) => {
+export const _login = async(username, password, res) => {
     const existed = await User.findOne({ username });
     if(!existed)
         return res.status(401).json({error: "User not existed"});

@@ -1,6 +1,7 @@
 import Workspace from "../models/workspace.model.js";
 import User from "../models/user.model.js";
 import { createNewWorkspace } from "../function/workspace/createNewWorkspace.js";
+import { getAllWorkspaceFromDb } from "../function/workspace/getAllWorkspaceFromDb.js";
 
 // CREATE NEW WORKSPACE
 export const createWorkspace = async (req, res) => {
@@ -11,7 +12,7 @@ export const createWorkspace = async (req, res) => {
     return res.status(401).json({ error: "Unauthorize" });
 
   try {
-    const newWorkspace = await createNewWorkspace(name, user_id);
+    const newWorkspace = await createNewWorkspace(name, user_id, res);
     res.status(200).json(newWorkspace);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -22,16 +23,11 @@ export const createWorkspace = async (req, res) => {
 export const getAllWorkspace = async (req, res) => {
   const user_id = req.user.id;
 
-  if (!user_id) return res.status(401).json({ error: "Unauthorize" });
+  if (!user_id) 
+    return res.status(401).json({ error: "Unauthorize" });
 
   try {
-    const user = await User.findOne({ _id: user_id });
-    if (!user)
-      return res.status(400).json({ error: "User is not existed on database" });
-
-    const workspaces = await Workspace.find({ user_id });
-    if (!workspaces)
-      return res.status(400).json({ error: "Failed to get workspace" });
+    const workspaces = await getAllWorkspaceFromDb(user_id, res);
     res.status(200).json(workspaces);
   } catch (error) {
     res.status(500).json({ error: error.message });
