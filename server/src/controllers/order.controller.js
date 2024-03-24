@@ -1,5 +1,5 @@
 import { create } from "../function/order/create.js";
-import Order from "../models/order.model.js";
+import { getAll } from "../function/order/getAll.js";
 
 export const createOrder = async (req, res) => {
   const { product_id, product_name, margin_per_unit, quantity } = req.body;
@@ -32,9 +32,7 @@ export const getAllOrder = async (req, res) => {
     return res.status(400).json({ error: "Workspace not found" });
 
   try {
-    const orders = await Order.find({ workspace_id });
-    if (!orders) return res.status(400).json({ error: "Failed to get orders" });
-
+    const orders = await getAll(workspace_id, res);
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ error: error.message });
