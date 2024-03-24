@@ -1,3 +1,4 @@
+import { create } from "../function/product/create.js";
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
 
@@ -5,21 +6,13 @@ export const createProduct = async (req, res) => {
   const user_id = req.user.id;
   const { name, margin_per_unit } = req.body;
 
-  if (!user_id) return res.status(401).json({ error: "Unauthorize" });
+  if (!user_id) 
+    return res.status(401).json({ error: "Unauthorize" });
   if (!name || !margin_per_unit)
     return res.status(400).json({ error: "Please complete all field" });
 
   try {
-    const user = await User.findOne({ _id: user_id });
-    if (!user) return res.status(400).json({ error: "User not found" });
-
-    const existed = await Product.findOne({ name, user_id });
-    if (existed) return res.status(400).json({ error: "Data already existed" });
-
-    const newProduct = await Product.create({ name, margin_per_unit, user_id });
-    if (!newProduct)
-      return res.status(400).json({ error: "Failed to create new product" });
-
+    const newProduct = await create(user_id, name, margin_per_unit, res);
     res.status(200).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: error.message });
