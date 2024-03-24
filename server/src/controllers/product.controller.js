@@ -58,7 +58,6 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const updateProductAmountByType = async (req, res) => {
   const { type, newAmount } = req.body;
   const { id } = req.params;
@@ -69,7 +68,6 @@ export const updateProductAmountByType = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const getProductById = async(req, res) => {
   const { id } = req.params;
 
