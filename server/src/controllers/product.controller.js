@@ -1,4 +1,5 @@
 import { create } from "../function/product/create.js";
+import { edit } from "../function/product/edit.js";
 import { getAll } from "../function/product/getAll.js";
 import Product from "../models/product.model.js";
 
@@ -30,7 +31,6 @@ export const getAllProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 export const editProduct = async (req, res) => {
   const { id } = req.params;
   const { n_name, n_margin, n_amount } = req.body;
@@ -38,12 +38,7 @@ export const editProduct = async (req, res) => {
     return res.status(400).json({ error: "Invalid Data | product id is null" });
 
   try {
-    const product = await Product.findOne({ _id: id });
-    if (!product) return res.status(400).json({ error: "Product not found" });
-    product.name = n_name;
-    product.margin_per_unit = n_margin;
-    product.amount = n_amount;
-    await product.save();
+    const product = await edit(id, n_name, n_margin, n_amount, res);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
