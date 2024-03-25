@@ -24,7 +24,6 @@ const App = () => {
         <Route path="/profile" element={authUser ? <Profile /> : <Navigate to='/login' />} />
         <Route path="/inventory" element={authUser ? <Inventory /> : <Navigate to='/login' />} />
         <Route path="/stock-history" element={authUser ? <StockHistory /> : <Navigate to='/login' />} />
-
       </Routes>
       <Toaster toastOptions={{
         duration: 2000
