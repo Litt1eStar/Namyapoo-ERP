@@ -7,11 +7,15 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
 } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const StockHistory = () => {
-  const [stockHistorys, setStockHistorys] = useState([]);  
+  const [stockHistorys, setStockHistorys] = useState([]);
+  const navigate = useNavigate();
 
   const fetchProductFromDb = async () => {
     try {
@@ -31,6 +35,14 @@ const StockHistory = () => {
 
   return (
     <>
+      <Button
+        variant="text"
+        color="inherit"
+        onClick={() => navigate("/")}
+        sx={{ width: "100%", marginBottom: "20px" }}
+      >
+        <HomeIcon />
+      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
