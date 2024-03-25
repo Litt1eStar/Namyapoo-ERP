@@ -33,8 +33,10 @@ export const create = async (req, res) => {
       amount,
       createdAt,
       user_id,
-      res
     );
+    if(!newHistory)
+      return res.status(400).json({error: "Failed to create new History"})
+    
     res.status(200).json(newHistory);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -6,7 +6,6 @@ export const _create = async (
   amount,
   createdAt,
   user_id,
-  res
 ) => {
   const newHistory = await StockHistory.create({
     product_name,
@@ -15,8 +14,5 @@ export const _create = async (
     createdAt,
     user_id,    
   });
-  if (!newHistory)
-    return res.status(400).json({ error: "Failed to create new History" });
-
   return newHistory;
 };
