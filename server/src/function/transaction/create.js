@@ -2,6 +2,8 @@ import Transaction from "../../models/transaction.model.js";
 import Order from "../../models/order.model.js";
 import Product from "../../models/product.model.js";
 import { lineNotify } from "../lineNotify.js";
+import { _create } from '../stockHistory/create.js'
+import { formattedDate } from "../../utils/formattedDate.js";
 
 export const create = async (orders, workspace_id, user_id, res) => {
   const orderPromises = orders.map(async (order) => {
@@ -17,7 +19,16 @@ export const create = async (orders, workspace_id, user_id, res) => {
       { $inc: { amount: -order.quantity } },
       { new: true }
     );
+
+    await _create(
+      order.product_name,
+      "Export",
+      order.quantity,
+      formattedDate(order.createdAt),
+      user_id
+    )
   });
+  
 
   const total = orderResults.reduce((acc, order) => acc + order.totalMargin, 0);
 

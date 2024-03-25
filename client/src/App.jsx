@@ -9,6 +9,7 @@ import Workspace from "./pages/Workspace";
 import Transaction from "./pages/Transaction";
 import Profile from "./pages/Profile";
 import Inventory from "./pages/Inventory";
+import StockHistory from "./pages/StockHistory";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -22,7 +23,7 @@ const App = () => {
         <Route path="/transaction/:transaction_id" element={authUser ? <Transaction /> : <Navigate to='/login' />} />
         <Route path="/profile" element={authUser ? <Profile /> : <Navigate to='/login' />} />
         <Route path="/inventory" element={authUser ? <Inventory /> : <Navigate to='/login' />} />
-
+        <Route path="/stock-history" element={authUser ? <StockHistory /> : <Navigate to='/login' />} />
       </Routes>
       <Toaster toastOptions={{
         duration: 2000
