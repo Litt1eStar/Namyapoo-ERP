@@ -16,6 +16,10 @@ const schema = new mongoose.Schema({
     createdAt: {
         type: String,  // Format string from product createdAt
         required: true
+    },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
     }
 });
 
