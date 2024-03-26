@@ -1,9 +1,9 @@
 import Workspace from "../../models/workspace.model.js";
 
-export const _updateStatus = async (id, res) => {
+export const _updateStatus = async (id) => {
   const workspace = await Workspace.findOne({ _id: id });
   if (!workspace) 
-    return res.status(400).json({ error: "workspace not found" });
+    throw new Error('Workspace not existed');
   workspace.status = !workspace.status;
   await workspace.save();
 

@@ -8,18 +8,18 @@ export const createTransactoin = async (req, res) => {
   const orders = req.body;
 
   try {
-    const newTransaction = await create(orders, workspace_id, user_id, res);
+    const newTransaction = await create(orders, workspace_id, user_id);
     res.status(200).json(newTransaction);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const getTransaction = async (req, res) => {
+export const getTransaction = async (req) => {
   const user_id = req.user.id;
 
   try {
-    const transactions = await _getTransaction(user_id, res);
+    const transactions = await _getTransaction(user_id);
     res.status(200).json(transactions);
   } catch (error) {
     res.status(500).json({ error: error.message });

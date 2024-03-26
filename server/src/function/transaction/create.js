@@ -5,7 +5,7 @@ import { lineNotify } from "../lineNotify.js";
 import { _create } from '../stockHistory/create.js'
 import { formattedDate } from "../../utils/formattedDate.js";
 
-export const create = async (orders, workspace_id, user_id, res) => {
+export const create = async (orders, workspace_id, user_id) => {
   const orderPromises = orders.map(async (order) => {
     const orderInfo = await Order.findById(order.order_id);
     return orderInfo;
@@ -33,9 +33,7 @@ export const create = async (orders, workspace_id, user_id, res) => {
   const total = orderResults.reduce((acc, order) => acc + order.totalMargin, 0);
 
   if (!orderResults)
-    return res
-      .status(400)
-      .json({ error: "Failed to get order to make transaction" });
+    throw new Error('Failed to get order to make transaction')
 
   const newTransaction = await Transaction.create({
     orders: orderResults,
@@ -44,7 +42,7 @@ export const create = async (orders, workspace_id, user_id, res) => {
     workspace_id,
   });
   if (!newTransaction)
-    return res.status(400).json({ error: "Failed to crate Transaction" });
+    throw new Error('Failed to create new Transaction')
 
 
   await lineNotify(
