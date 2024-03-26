@@ -18,7 +18,6 @@ export const createOrder = async (req, res) => {
       margin_per_unit,
       quantity,
       workspace_id, 
-      res
     );
     res.status(200).json(order);
   } catch (error) {
@@ -33,7 +32,7 @@ export const getAllOrder = async (req, res) => {
     return res.status(400).json({ error: "Workspace not found" });
 
   try {
-    const orders = await getAll(workspace_id, res);
+    const orders = await getAll(workspace_id);
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ error: error.message });
