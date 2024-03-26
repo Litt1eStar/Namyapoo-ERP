@@ -1,6 +1,6 @@
 import Product from "../../models/product.model.js";
 
-export const _updateAmountByType = async (id, newAmount, type, res) => {
+export const _updateAmountByType = async (id, newAmount, type) => {
     const product = await Product.findById(id);
     switch (type) {
       case "import":
@@ -10,7 +10,7 @@ export const _updateAmountByType = async (id, newAmount, type, res) => {
         product.amount -= newAmount;
         break;
       default:
-        return res.status(400).json({ error: "Invalid operation type" });
+        throw new Error('Invalid operation type')
     }
     await product.save();
 

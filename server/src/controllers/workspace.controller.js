@@ -15,7 +15,7 @@ export const createWorkspace = async (req, res) => {
     return res.status(401).json({ error: "Unauthorize" });
 
   try {
-    const newWorkspace = await createNewWorkspace(name, user_id, res);
+    const newWorkspace = await createNewWorkspace(name, user_id);
     res.status(200).json(newWorkspace);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -30,7 +30,7 @@ export const getAllWorkspace = async (req, res) => {
     return res.status(401).json({ error: "Unauthorize" });
 
   try {
-    const workspaces = await getAllWorkspaceFromDb(user_id, res);
+    const workspaces = await getAllWorkspaceFromDb(user_id);
     res.status(200).json(workspaces);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -43,7 +43,7 @@ export const getWorkspaceById = async(req, res) => {
   if(!workspace_id) return;
 
   try {
-      const workspace = await _getWorkspaceById(workspace_id, res);
+      const workspace = await _getWorkspaceById(workspace_id);
       res.status(200).json(workspace)
   } catch (error) {
     res.status(500).json({error: error.message});
@@ -56,7 +56,7 @@ export const updateStatus = async (req, res) => {
     if(!id) return res.status(400).json({error: "Invalid Data | workspace id is invalid"})
 
     try {
-        const workspace = await _updateStatus(id, res)
+        const workspace = await _updateStatus(id)
         res.status(200).json({updated: workspace})
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -70,7 +70,7 @@ export const deleteWorkspace = async (req, res) => {
     if(!id) return res.status(400).json({error: "Invalid Data | workspace id is invalid"})
 
     try {
-        await _deleteWorkspace(id, res);
+        await _deleteWorkspace(id);
         res.status(200).json({message: "Succesfully delete workspace"});
     } catch (error) {
         res.status(500).json({ error: error.message });

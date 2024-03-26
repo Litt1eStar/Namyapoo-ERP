@@ -15,7 +15,7 @@ export const createProduct = async (req, res) => {
     return res.status(400).json({ error: "Please complete all field" });
 
   try {
-    const newProduct = await create(user_id, name, margin_per_unit, res);
+    const newProduct = await create(user_id, name, margin_per_unit);
     res.status(200).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -40,7 +40,7 @@ export const editProduct = async (req, res) => {
     return res.status(400).json({ error: "Invalid Data | product id is null" });
 
   try {
-    const product = await edit(id, n_name, n_margin, n_amount, res);
+    const product = await edit(id, n_name, n_margin, n_amount);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -52,7 +52,7 @@ export const deleteProduct = async (req, res) => {
     return res.status(400).json({ error: "Invalid Data | product id is null" });
 
   try {
-    await _deleteProduct(id, res);
+    await _deleteProduct(id);
     res.status(200).json({ message: "Successfully delete product" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -62,7 +62,7 @@ export const updateProductAmountByType = async (req, res) => {
   const { type, newAmount } = req.body;
   const { id } = req.params;
   try {
-    const product = await _updateAmountByType(id, newAmount, type, res);
+    const product = await _updateAmountByType(id, newAmount, type);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,9 +1,9 @@
 import Order from "../../models/order.model.js";
 
-export const getAll = async(workspace_id, res) => {
+export const getAll = async(workspace_id) => {
     const orders = await Order.find({ workspace_id });
     if (!orders) 
-        return res.status(400).json({ error: "Failed to get orders" });
+        throw new Error('Failed to get All orders');
     
     return orders;
 }
