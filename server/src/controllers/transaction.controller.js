@@ -1,14 +1,22 @@
+import redisClient from "../../redisClient.js";
 import { create } from "../function/transaction/create.js";
 import { _getTransaction } from "../function/transaction/getTransaction.js";
 import Transaction from "../models/transaction.model.js";
+import { updateCache } from "../utils/updateCache.js";
 
 export const createTransactoin = async (req, res) => {
   const user_id = req.user.id;
   const { workspace_id } = req.params;
-  const orders = req.body;
+  const { orders, area_price } = req.body;
 
   try {
-    const newTransaction = await create(orders, workspace_id, user_id);
+    const newTransaction = await create(
+      orders,
+      workspace_id,
+      user_id,
+      area_price
+    );
+    await updateCache("Transaction", "transactions", user_id);
     res.status(200).json(newTransaction);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -20,6 +28,10 @@ export const getTransaction = async (req) => {
 
   try {
     const transactions = await _getTransaction(user_id);
+    await redisClient.set(
+      `transactions:${user_id}`,
+      JSON.stringify(transactions)
+    );
     res.status(200).json(transactions);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -52,7 +64,7 @@ export const getTransactionByWorkspaceId = async (req, res) => {
     const transaction = await Transaction.findOne({ workspace_id });
     if (!transaction)
       return res.status(400).json({ error: "Transaction not found" });
-
+    
     res.status(200).json(transaction);
   } catch (error) {
     res.status(500).json({ error: error.message });

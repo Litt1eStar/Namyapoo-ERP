@@ -11,8 +11,9 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
 } from "@mui/material";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 
 const Transaction = () => {
   const { transaction_id } = useParams();
@@ -53,6 +54,11 @@ const Transaction = () => {
               <TableCell align="right">ต้นทุนอิงจากจำนวณ</TableCell>
             </TableRow>
           </TableHead>
+          {transactions && (
+            <Typography pl={2} pt={2}>
+              ค่าพื้นที่: {transactions.area_price}
+            </Typography>
+          )}
           <TableBody>
             {transactions?.orders.map((order) => (
               <TableRow

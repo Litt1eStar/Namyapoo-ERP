@@ -1,5 +1,7 @@
+import redisClient from "../../redisClient.js";
 import { _create } from "../function/stockHistory/create.js";
 import StockHistory from "../models/stockHistory.model.js";
+import { updateCache } from "../utils/updateCache.js";
 
 export const getAll = async (req, res) => {
   const user_id = req.user.id;
@@ -11,6 +13,10 @@ export const getAll = async (req, res) => {
     if (!historys)
       return res.status(400).json({ error: "Failed to get history" });
 
+    console.log('Stock History')
+    console.log(historys);
+    
+    await redisClient.set(`stockHistorys:${user_id}`, JSON.stringify(historys));
     res.status(200).json(historys);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -37,6 +43,7 @@ export const create = async (req, res) => {
     if(!newHistory)
       return res.status(400).json({error: "Failed to create new History"})
     
+    console.log(`CREATE HISToRY`)
     res.status(200).json(newHistory);
   } catch (error) {
     res.status(500).json({ error: error.message });
