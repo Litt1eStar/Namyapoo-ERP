@@ -82,7 +82,6 @@ const Workspace = () => {
           width: "100%",
           height: "130px",
           fontSize: "50px",
-          marginTop: "150px",
         }}
         onClick={handleClick}
       >
