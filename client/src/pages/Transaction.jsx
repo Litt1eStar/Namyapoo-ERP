@@ -49,7 +49,7 @@ const Transaction = () => {
       toast.error(error.message);
     }
   }
-
+  console.log(transactions)
   useEffect(() => {
     fetchTransactoin();
   }, []);
