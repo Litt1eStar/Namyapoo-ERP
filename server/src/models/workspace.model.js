@@ -6,9 +6,10 @@ const schema = new mongoose.Schema({
         required: true
     },
     status:{
-        type: Boolean,
+        type: String,
         required: true,
-        default: false
+        enum: ['done', 'not_done', 'in_progress'],
+        default: 'not_done'
     },
     user_id:{
         type: mongoose.Schema.Types.ObjectId,

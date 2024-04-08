@@ -11,25 +11,45 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
+  TextField,
+  Stack
 } from "@mui/material";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 
 const Transaction = () => {
   const { transaction_id } = useParams();
   const [transactions, setTransactions] = useState(null);
+  const [sales, setSales] = useState("");
   const navigate = useNavigate();
   const fetchTransactoin = async () => {
     try {
       const res = await fetch(`/api/transaction/${transaction_id}`);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-
       setTransactions(data);
     } catch (error) {
       toast.error(error.message);
     }
   };
+  const handleDone = async() => {
+    try {
+      const res = await fetch(`/api/workspace/updateStatus/${transactions.workspace_id}`, {
+        method: "PUT",
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ isDone: true})
+      });
+      const data = await res.json();
+      if(data.error) throw new Error(data.error)
 
+      navigate('/')
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+  console.log(transactions)
   useEffect(() => {
     fetchTransactoin();
   }, []);
@@ -53,6 +73,11 @@ const Transaction = () => {
               <TableCell align="right">ต้นทุนอิงจากจำนวณ</TableCell>
             </TableRow>
           </TableHead>
+          {transactions && (
+            <Typography pl={2} pt={2}>
+              ค่าพื้นที่: {transactions.area_price}
+            </Typography>
+          )}
           <TableBody>
             {transactions?.orders.map((order) => (
               <TableRow
@@ -78,6 +103,10 @@ const Transaction = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Stack width='50%'  mt={10} mx='auto' gap={5}>
+        <TextField label='ยอดขาย' value={sales} onChange={(e)=>setSales(e.target.value)}/>
+        <Button variant="contained" color="success" onClick={handleDone}>DONE</Button>
+      </Stack>
     </>
   );
 };

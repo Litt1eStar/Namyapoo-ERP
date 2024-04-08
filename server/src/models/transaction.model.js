@@ -16,6 +16,10 @@ const schema = new mongoose.Schema({
     workspace_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
+    },
+    area_price: {
+        type: Number,
+        required: true,
     }
 }, {timestamps: true})
 
