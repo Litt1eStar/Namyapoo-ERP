@@ -54,11 +54,12 @@ export const getWorkspaceById = async(req, res) => {
 //UPDATE STATUS OF WORKSPACE
 export const updateStatus = async (req, res) => {
     const { id } = req.params;
+    const { isDone } = req.body;
     const user_id = req.user.id;
     if(!id) return res.status(400).json({error: "Invalid Data | workspace id is invalid"})
 
     try {
-        const workspace = await _updateStatus(id)
+        const workspace = await _updateStatus(id, isDone)
         await updateCache("Workspace", "workspaces", user_id);
         res.status(200).json({updated: workspace})
     } catch (error) {
