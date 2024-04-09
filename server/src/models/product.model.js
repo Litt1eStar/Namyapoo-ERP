@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { dbInventory } from "../../db.js";
 
 const schema = new mongoose.Schema({
     name:{
@@ -20,6 +21,6 @@ const schema = new mongoose.Schema({
     }
 }, {timestamps: true})
 
-const Product = mongoose.model("Product", schema);
+const Product = dbInventory.model("Product", schema);
 
 export default Product;

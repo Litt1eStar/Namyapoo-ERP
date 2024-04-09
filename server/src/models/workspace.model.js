@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { dbInventory } from "../../db.js";
 
 const schema = new mongoose.Schema({
     name:{
@@ -17,6 +18,6 @@ const schema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-const Workspace = mongoose.model("Workspace", schema);
+const Workspace = dbInventory.model("Workspace", schema);
 
 export default Workspace;

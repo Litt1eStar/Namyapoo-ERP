@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import path from "path";
 
-import { connectToDb } from "./connectToDb.js";
 import authRoute from "./src/routers/auth.route.js";
 import workspaceRoute from "./src/routers/workspace.route.js";
 import productRoute from "./src/routers/product.route.js";
@@ -11,6 +10,7 @@ import orderRoute from "./src/routers/order.route.js";
 import transactionRoute from "./src/routers/transaction.route.js";
 import userRoute from "./src/routers/user.route.js";
 import stockHistoryRoute from "./src/routers/stockHistrory.route.js";
+
 
 dotenv.config();
 
@@ -34,6 +34,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
-  connectToDb();
   console.log(`Connected to Port ${process.env.PORT}`);
 });
