@@ -3,6 +3,7 @@ import Order from "../../models/order.model.js";
 import Product from "../../models/product.model.js";
 import { lineNotify } from "../lineNotify.js";
 import { _create } from '../stockHistory/create.js'
+import { _create as accountCreate} from "../accounting/create.js"
 import { formattedDate } from "../../utils/formattedDate.js";
 import { updateCache } from "../../utils/updateCache.js";
 
@@ -53,5 +54,6 @@ export const create = async (orders, workspace_id, user_id, area_price) => {
     `Create New Transaction \n ต้นทุนทั้งหมด: ${newTransaction.totalMargin} บาท`
   );
 
+  
   return newTransaction;
 };

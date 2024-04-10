@@ -13,7 +13,7 @@ import {
   Paper,
   Typography,
   TextField,
-  Stack
+  Stack,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 
@@ -32,24 +32,49 @@ const Transaction = () => {
       toast.error(error.message);
     }
   };
-  const handleDone = async() => {
+  const handleDone = async () => {
     try {
-      const res = await fetch(`/api/workspace/updateStatus/${transactions.workspace_id}`, {
-        method: "PUT",
-        headers:{
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ isDone: true})
-      });
+      const res = await fetch(
+        `/api/workspace/updateStatus/${transactions.workspace_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isDone: true }),
+        }
+      );
       const data = await res.json();
-      if(data.error) throw new Error(data.error)
+      const currentDate = new Date();
+      // Format the date as desired (e.g., "April 10, 2024")
+      const formattedDate = currentDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
 
-      navigate('/')
+      if (data.error) throw new Error(data.error);
+
+      const acc_res = await fetch(`/api/accounting/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date: formattedDate,
+          total_value: Number(transactions.totalMargin) + Number(sales),
+          total_margin: transactions.totalMargin,
+        }),
+      });
+      const acc_data = await acc_res.json();
+      if (acc_data.error) throw new Error(acc_data.error);
+
+      navigate("/");
     } catch (error) {
       toast.error(error.message);
     }
-  }
-  console.log(transactions)
+  };
+  console.log(transactions);
   useEffect(() => {
     fetchTransactoin();
   }, []);
@@ -103,12 +128,29 @@ const Transaction = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack width='50%'  mt={10} mx='auto' gap={5}>
-        <TextField label='ยอดขาย' value={sales} onChange={(e)=>setSales(e.target.value)}/>
-        <Button variant="contained" color="success" onClick={handleDone}>DONE</Button>
+      <Stack width="50%" mt={10} mx="auto" gap={5}>
+        <TextField
+          label="ยอดขาย"
+          value={sales}
+          onChange={(e) => setSales(e.target.value)}
+        />
+        <Button variant="contained" color="success" onClick={handleDone}>
+          DONE
+        </Button>
       </Stack>
     </>
   );
 };
 
 export default Transaction;
+
+function formattedDate(date) {
+  const dateObject = new Date(date);
+
+  const day = dateObject.getUTCDate().toString().padStart(2, "0");
+  const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, "0");
+  const year = dateObject.getUTCFullYear();
+
+  const formattedDate = `${day}/${month}/${year}`;
+  return formattedDate;
+}
