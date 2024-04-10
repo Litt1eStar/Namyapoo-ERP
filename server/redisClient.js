@@ -1,12 +1,10 @@
 import redis from "redis";
 
 let redisClient;
-var redisPort = 6379;
 
 (async () => {
   redisClient = redis.createClient({
-    host: "https://namyapoo-event-margin-calculator.onrender.com/",
-    port: redisPort,
+    url: process.env.REDIS_URL,
     reconnectStrategy: function (retries) {
       if (retries > 20) {
         console.log(
@@ -20,6 +18,7 @@ var redisPort = 6379;
   });
 
   redisClient.on("ready", () => console.log(`Redis is ready`));
+  
   redisClient.on("error", (err) => {
     console.log(`Redis Error : ${err}`);
   });
