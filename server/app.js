@@ -10,6 +10,7 @@ import orderRoute from "./src/routers/order.route.js";
 import transactionRoute from "./src/routers/transaction.route.js";
 import userRoute from "./src/routers/user.route.js";
 import stockHistoryRoute from "./src/routers/stockHistrory.route.js";
+import accountingRoute from "./src/routers/accouting.route.js";
 
 
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(`/api/order`, orderRoute);
 app.use(`/api/transaction`, transactionRoute);
 app.use(`/api/user`, userRoute);
 app.use(`/api/stock-history`, stockHistoryRoute);
+app.use(`/api/accounting`, accountingRoute);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));

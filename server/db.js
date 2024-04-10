@@ -10,18 +10,14 @@ if (
   process.exit(1);
 }
 
-const dbInventory = mongoose.createConnection(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const dbInventory = mongoose.createConnection(process.env.MONGO_URI);
 dbInventory.on("error", console.error.bind(console, "Connection error:"));
 dbInventory.once("open", () => {
   console.log("Connected to Inventory database");
 });
 
 const dbAccounting = mongoose.createConnection(
-  process.env.MONGO_URI_ACCOUNTING,
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  process.env.MONGO_URI_ACCOUNTING
 );
 dbAccounting.on("error", console.error.bind(console, "Connection error:"));
 dbAccounting.once("open", () => {
