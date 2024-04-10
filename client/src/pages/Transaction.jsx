@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import {
+  Box,
   Button,
   Table,
   TableBody,
@@ -45,6 +46,8 @@ const Transaction = () => {
         }
       );
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
       const currentDate = new Date();
       // Format the date as desired (e.g., "April 10, 2024")
       const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -52,8 +55,6 @@ const Transaction = () => {
         day: "numeric",
         year: "numeric",
       });
-
-      if (data.error) throw new Error(data.error);
 
       const acc_res = await fetch(`/api/accounting/create`, {
         method: "POST",
@@ -69,6 +70,13 @@ const Transaction = () => {
       const acc_data = await acc_res.json();
       if (acc_data.error) throw new Error(acc_data.error);
 
+      const transaction_res = await fetch(`/api/transaction/${transactions._id}`, {
+        method: "PUT"
+      })
+      const transaction_data = await transaction_res.json();
+      if(transaction_data.error)
+        throw new Error('Failed to update status of Transaction') 
+      
       navigate("/");
     } catch (error) {
       toast.error(error.message);
@@ -128,29 +136,26 @@ const Transaction = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack width="50%" mt={10} mx="auto" gap={5}>
-        <TextField
-          label="ยอดขาย"
-          value={sales}
-          onChange={(e) => setSales(e.target.value)}
-        />
-        <Button variant="contained" color="success" onClick={handleDone}>
-          DONE
-        </Button>
-      </Stack>
+      { !transactions?.status && (
+        <Stack width="50%" mt={10} mx="auto" gap={5}>
+          <TextField
+            label="ยอดขาย"
+            value={sales}
+            onChange={(e) => setSales(e.target.value)}
+          />
+          <Button variant="contained" color="success" onClick={handleDone}>
+            DONE
+          </Button>
+        </Stack>
+      )}
+
+      { transactions?.status && (
+        <Box width='100%' mx='10%' mt={10}>
+          <Typography variant="h4" color='darkorange'>Transaction นี้สำเร็จแล้ว</Typography>
+        </Box>
+      )}
     </>
   );
 };
 
 export default Transaction;
-
-function formattedDate(date) {
-  const dateObject = new Date(date);
-
-  const day = dateObject.getUTCDate().toString().padStart(2, "0");
-  const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, "0");
-  const year = dateObject.getUTCFullYear();
-
-  const formattedDate = `${day}/${month}/${year}`;
-  return formattedDate;
-}

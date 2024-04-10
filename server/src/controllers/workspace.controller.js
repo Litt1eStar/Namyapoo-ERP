@@ -3,6 +3,7 @@ import { createNewWorkspace } from "../function/workspace/createNewWorkspace.js"
 import { getAllWorkspaceFromDb } from "../function/workspace/getAllWorkspaceFromDb.js";
 import { _getWorkspaceById } from "../function/workspace/getWorkspaceById.js";
 import { _updateStatus } from "../function/workspace/updateStatus.js";
+import { _updateStatus as transaction_updateStatus } from "../function/transaction/updateStatus.js";
 import { _deleteWorkspace } from "../function/workspace/deleteWorkspace.js";
 import { updateCache } from "../utils/updateCache.js";
 
@@ -61,6 +62,7 @@ export const updateStatus = async (req, res) => {
     try {
         const workspace = await _updateStatus(id, isDone)
         await updateCache("Workspace", "workspaces", user_id);
+
         res.status(200).json({updated: workspace})
     } catch (error) {
         res.status(500).json({ error: error.message });

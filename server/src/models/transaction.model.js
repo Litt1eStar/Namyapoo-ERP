@@ -21,6 +21,10 @@ const schema = new mongoose.Schema({
     area_price: {
         type: Number,
         required: true,
+    },
+    status: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true})
 
