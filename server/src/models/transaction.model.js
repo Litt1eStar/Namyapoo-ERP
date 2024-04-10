@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { dbInventory } from "../../db.js";
 
 const schema = new mongoose.Schema({
     orders: {
@@ -20,9 +21,13 @@ const schema = new mongoose.Schema({
     area_price: {
         type: Number,
         required: true,
+    },
+    status: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps: true})
 
-const Transaction = mongoose.model("Transaction", schema)
+const Transaction = dbInventory.model("Transaction", schema)
 
 export default Transaction;

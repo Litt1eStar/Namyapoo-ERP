@@ -1,6 +1,7 @@
 import redisClient from "../../redisClient.js";
 import { create } from "../function/transaction/create.js";
 import { _getTransaction } from "../function/transaction/getTransaction.js";
+import { _updateStatus } from "../function/transaction/updateStatus.js";
 import Transaction from "../models/transaction.model.js";
 import { updateCache } from "../utils/updateCache.js";
 
@@ -64,9 +65,23 @@ export const getTransactionByWorkspaceId = async (req, res) => {
     const transaction = await Transaction.findOne({ workspace_id });
     if (!transaction)
       return res.status(400).json({ error: "Transaction not found" });
-    
+
     res.status(200).json(transaction);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateStatus = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const transaction = await _updateStatus(id);
+    if(!transaction)
+      throw new Error('Failed to Update transaction status')
+
+    res.status(200).json(transaction);
+  } catch (error) {
+    res.status(500).json({error: error.message});
   }
 };

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import { dbInventory } from "../../db.js";
 const schema = new mongoose.Schema({
     product_id:{
         type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +30,6 @@ const schema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-const Order = mongoose.model("Order", schema);
+const Order = dbInventory.model("Order", schema);
 
 export default Order;
