@@ -85,3 +85,18 @@ export const updateStatus = async (req, res) => {
     res.status(500).json({error: error.message});
   }
 };
+
+export const updateSaleValue = async(req, res) => {
+  const { id } = req.params;
+  const { sale } = req.body;
+  try {
+    const transactoin = await Transaction.findById(id);
+    if(!transactoin) throw new Error(`Failed to fetch Transaction`);
+    transactoin.sale = Number(sale);
+    await transactoin.save();
+
+    res.status(200).json({ message: "Update Sale of Transaction"})
+  } catch (error) {
+    res.status(500).json({error: error.message});
+  }
+}

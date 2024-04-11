@@ -49,7 +49,7 @@ const Transaction = () => {
       if (data.error) throw new Error(data.error);
 
       const currentDate = new Date();
-      // Format the date as desired (e.g., "April 10, 2024")
+
       const formattedDate = currentDate.toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
@@ -70,14 +70,31 @@ const Transaction = () => {
       const acc_data = await acc_res.json();
       if (acc_data.error) throw new Error(acc_data.error);
 
-      const transaction_res = await fetch(`/api/transaction/${transactions._id}`, {
-        method: "PUT"
-      })
+      const transaction_res = await fetch(
+        `/api/transaction/${transactions._id}`,
+        {
+          method: "PUT",
+        }
+      );
       const transaction_data = await transaction_res.json();
-      if(transaction_data.error)
-        throw new Error('Failed to update status of Transaction') 
-      
-      navigate("/");
+      if (transaction_data.error)
+        throw new Error("Failed to update status of Transaction");
+
+      const transaction_sales_res = await fetch(
+        `/api/transaction/sales/${transactions._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sale: Number(sales) }),
+        }
+      );
+      const transaction_sales_data = await transaction_sales_res.json();
+      if (transaction_sales_data.error)
+        throw new Error(transaction_sales_data.error);
+
+      window.location.reload();
     } catch (error) {
       toast.error(error.message);
     }
@@ -136,7 +153,7 @@ const Transaction = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      { !transactions?.status && (
+      {!transactions?.status && (
         <Stack width="50%" mt={10} mx="auto" gap={5}>
           <TextField
             label="ยอดขาย"
@@ -149,9 +166,22 @@ const Transaction = () => {
         </Stack>
       )}
 
-      { transactions?.status && (
-        <Box width='100%' mx='10%' mt={10}>
-          <Typography variant="h4" color='darkorange'>Transaction นี้สำเร็จแล้ว</Typography>
+      {transactions?.status && (
+        <Box width="100%" mx="10%" mt={10}>
+          <Typography variant="h4" color="darkorange">
+            Transaction นี้สำเร็จแล้ว
+          </Typography>
+          <Typography variant="h5" color="black" fontWeight={500}>
+            ยอดขาย: {transactions.sale.toLocaleString()} บาท
+          </Typography>
+          <Typography variant="h6" color="black" fontWeight={400}>
+            ต้นทุนทั้งหมด: {transactions.totalMargin.toLocaleString()} บาท
+          </Typography>
+          <Typography variant="h6" color="black" fontWeight={400}>
+            กำไร:{" "}
+            {(transactions.sale - transactions.totalMargin).toLocaleString()}{" "}
+            บาท
+          </Typography>
         </Box>
       )}
     </>

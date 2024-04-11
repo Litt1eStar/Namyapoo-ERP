@@ -25,6 +25,10 @@ const schema = new mongoose.Schema({
     status: {
         type: Boolean,
         default: false
+    },
+    sale: {
+        type: Number,
+        default: 0
     }
 }, {timestamps: true})
 
