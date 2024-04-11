@@ -63,7 +63,7 @@ const Transaction = () => {
         },
         body: JSON.stringify({
           date: formattedDate,
-          total_value: Number(transactions.totalMargin) + Number(sales),
+          total_value: Number(sales),
           total_margin: transactions.totalMargin,
         }),
       });
