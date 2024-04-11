@@ -39,6 +39,14 @@ const Profile = () => {
       >
         Log Out
       </Button>
+      <Button
+        color="secondary"
+        variant="contained"
+        sx={{ width: "20%", marginX: "auto", marginTop: 5}}
+        onClick={()=>navigate('/accountment')}
+      >
+        บัญชีร้านค้า
+      </Button>
     </Stack>
   );
 };
