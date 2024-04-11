@@ -37,3 +37,36 @@ export const getAll = async (req, res) => {
         res.status(500).json({error: error.message});
     }
 };
+
+export const getItemByFilteringDate = async (req, res) => {
+  const { month, year } = req.params;
+  const user_id = req.user.id;
+  
+  try {
+    const user = await User.findOne({ ref_user_id: user_id });
+    if (!user) throw new Error(`User not existed`);
+
+    const targetMonth = month.trim();
+    const targetYear = parseInt(year); // Convert year to integer
+
+    // Construct start date and end date based on target month and year
+    const startDate = new Date(`${targetMonth} 1, ${targetYear}`);
+    const endDate = new Date(startDate);
+    endDate.setMonth(startDate.getMonth() + 1); // Set to first day of next month
+
+    const result = await Accounting.find({ user_id: user._id });
+
+    if (!result) throw new Error(`Failed to find data for ${month} ${year}`);
+
+    // Filter the result based on the target month and year
+    const filteredResult = result.filter(item => {
+      const itemDate = new Date(item.date);
+      return itemDate.getMonth() === startDate.getMonth() && itemDate.getFullYear() === startDate.getFullYear();
+    });
+
+    res.status(200).json(filteredResult);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+}
