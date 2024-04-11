@@ -39,24 +39,29 @@ export const getAll = async (req, res) => {
 };
 
 export const getItemByFilteringDate = async (req, res) => {
-  const { month } = req.params;
+  const { month, year } = req.params;
   const user_id = req.user.id;
+  
   try {
     const user = await User.findOne({ ref_user_id: user_id });
-    if(!user) throw new Error(`User not existed`)
+    if (!user) throw new Error(`User not existed`);
 
-    const targetMonth = month.trim(); 
-    const startDate = new Date(`January 1, ${new Date().getFullYear()}`);
+    const targetMonth = month.trim();
+    const targetYear = parseInt(year); // Convert year to integer
+
+    // Construct start date and end date based on target month and year
+    const startDate = new Date(`${targetMonth} 1, ${targetYear}`);
     const endDate = new Date(startDate);
-    endDate.setFullYear(startDate.getFullYear() + 1); 
+    endDate.setMonth(startDate.getMonth() + 1); // Set to first day of next month
 
-    const result = await Accounting.find({ user_id: user._id});
+    const result = await Accounting.find({ user_id: user._id });
 
-    if (!result) throw new Error(`Failed to find data for ${month}`);
-    
+    if (!result) throw new Error(`Failed to find data for ${month} ${year}`);
+
+    // Filter the result based on the target month and year
     const filteredResult = result.filter(item => {
-      const itemMonth = item.date.split(' ')[0];
-      return itemMonth === targetMonth;
+      const itemDate = new Date(item.date);
+      return itemDate.getMonth() === startDate.getMonth() && itemDate.getFullYear() === startDate.getFullYear();
     });
 
     res.status(200).json(filteredResult);

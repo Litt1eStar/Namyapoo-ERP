@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post(`/create`, verifyToken, create);
 router.get(`/getAll`, verifyToken, getAll);
-router.get(`/filterDate/:month`, verifyToken, getItemByFilteringDate);
+router.get(`/filterDate/:month/:year`, verifyToken, getItemByFilteringDate);
 
 export default router;
