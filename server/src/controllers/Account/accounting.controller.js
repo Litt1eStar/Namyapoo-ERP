@@ -37,3 +37,31 @@ export const getAll = async (req, res) => {
         res.status(500).json({error: error.message});
     }
 };
+
+export const getItemByFilteringDate = async (req, res) => {
+  const { month } = req.params;
+  const user_id = req.user.id;
+  try {
+    const user = await User.findOne({ ref_user_id: user_id });
+    if(!user) throw new Error(`User not existed`)
+
+    const targetMonth = month.trim(); 
+    const startDate = new Date(`January 1, ${new Date().getFullYear()}`);
+    const endDate = new Date(startDate);
+    endDate.setFullYear(startDate.getFullYear() + 1); 
+
+    const result = await Accounting.find({ user_id: user._id});
+
+    if (!result) throw new Error(`Failed to find data for ${month}`);
+    
+    const filteredResult = result.filter(item => {
+      const itemMonth = item.date.split(' ')[0];
+      return itemMonth === targetMonth;
+    });
+
+    res.status(200).json(filteredResult);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+}
