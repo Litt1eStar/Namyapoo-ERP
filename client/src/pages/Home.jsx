@@ -46,6 +46,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (loggedIn === 'true') {
+      sessionStorage.removeItem('loggedIn');
+      window.location.reload();
+    }
+
     fetchWorkspaceFromDB();
   }, []);
 
