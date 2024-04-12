@@ -16,6 +16,15 @@ export const options = {
         size: 40, // Adjust the font size here
       },
     },
+    tooltip: {
+      padding: 20, // Adjust the padding of the tooltip here,
+      titleFont: {
+        size: 50
+      },
+      bodyFont: {
+        size: 40, // Adjust the font size of the tooltip body here
+      },
+    },
   },
   maintainAspectRatio: false, // Set to false to adjust both width and height
   layout: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -16,6 +16,8 @@ import {
   TextField,
   Stack,
 } from "@mui/material";
+import toast from 'react-hot-toast'
+
 import { options } from "./BarChart_options";
 
 ChartJS.register(
@@ -28,7 +30,12 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [accData, setAccData] = useState({
+    total_value: [],
+    total_margin: [],
+    total_profit: [],
+  })
 
   const data = {
     labels: [
@@ -46,16 +53,51 @@ const BarChart = () => {
       "ธ.ค",
     ],
     datasets: [
+
       {
-        label: "Steps By Pedro",
-        data: [3000, 5000, 4500, 6000, 8000, 7000, 9000],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-        borderColor: "rgb(75, 192, 192)",
-        borderWidth: 1,
+        label: "ต้นทุน",
+        data: accData ? accData.total_margin : null,
+        backgroundColor: ["#99CCFF"], // Blue color for positive margin, pink for negative margin
+        borderColor: ["#99CCFF"],  
+        borderWidth: 4,
+      },
+      {
+        label: "กำไร",
+        data: accData ? accData.total_profit : null,
+        backgroundColor: ["green"], // Green for positive profit, red for negative profit
+        borderColor: ["green"],  
+        borderWidth: 4,
+      },
+      {
+        label: "ยอดขาย",
+        data: accData ? accData.total_value : null,
+        backgroundColor: "#FF6633", // Orange color for sales
+        borderColor: "#FF6633",
+  
+        borderWidth: 4,
       },
     ],
   };
 
+
+  const fetchAccountData = async() => {
+    try {
+      const res = await fetch(`/api/accounting/getData/all/${Number(year)}`);
+      const data = await res.json();
+      if(data.error) throw new Error(data.error)
+      setAccData(data)
+    } catch (error) {
+      toast.error(error)
+    }
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    fetchAccountData();
+  }
+  useEffect(()=>{
+    fetchAccountData();
+  }, [])
   return (
     <>
       <div style={{ height: "1500px", width: '100%' }}>
@@ -68,7 +110,7 @@ const BarChart = () => {
               width: 150,
             }}
           />
-          <Button variant="outlined" color="inherit" sx={{ ml: 3 }}>
+          <Button variant="outlined" color="inherit" sx={{ ml: 3 }} onClick={handleSearch}>
             <SearchIcon />
           </Button>
         </Stack>
