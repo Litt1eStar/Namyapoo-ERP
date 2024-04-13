@@ -13,6 +13,7 @@ import StockHistory from "./pages/StockHistory";
 import Dashboard from "./pages/Dashboard";
 import Accounting from "./pages/Accounting";
 import WorkspaceHistory from "./pages/WorkspaceHistory";
+import StockDashboard from "./pages/StockDashboard";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -20,7 +21,8 @@ const App = () => {
     <div className="p-4 w-screen h-screen">
       <Routes>
         <Route path="/" element={ authUser ? <Home/> : <Navigate to='login' />} />
-        <Route path="/dashboard" element={authUser ? <Dashboard/> : <Navigate to='login' />} />
+        <Route path="/dashboard/accounting" element={authUser ? <Dashboard/> : <Navigate to='login' />} />
+        <Route path="/dashboard/stock" element={authUser ? <StockDashboard/> : <Navigate to='login' />} />
         <Route path="/accountment" element={authUser ? <Accounting/> : <Navigate to='login' />} />
         <Route path="/login" element={authUser ? <Navigate to='/' /> : <Login />} />
         <Route path="/signup" element={authUser ? <Navigate to='/' /> : <Signup />} />
