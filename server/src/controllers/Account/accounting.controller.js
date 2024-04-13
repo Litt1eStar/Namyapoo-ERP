@@ -194,7 +194,7 @@ export const getDataFromMonthAndYear = async (req, res) => {
         itemDate.getFullYear() === startDate.getFullYear()
       );
     }); 
-    console.log(filteredResult)
+    
     const weeklyTotal = {};
     filteredResult.forEach((item) => {
       const itemDate = new Date(item.date);

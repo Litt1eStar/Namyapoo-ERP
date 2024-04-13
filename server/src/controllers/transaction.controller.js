@@ -1,4 +1,5 @@
 import redisClient from "../../redisClient.js";
+import { lineNotify } from "../function/lineNotify.js";
 import { create } from "../function/transaction/create.js";
 import { _getTransaction } from "../function/transaction/getTransaction.js";
 import { _updateStatus } from "../function/transaction/updateStatus.js";
@@ -77,26 +78,36 @@ export const updateStatus = async (req, res) => {
 
   try {
     const transaction = await _updateStatus(id);
-    if(!transaction)
-      throw new Error('Failed to Update transaction status')
+    if (!transaction) throw new Error("Failed to Update transaction status");
 
     res.status(200).json(transaction);
   } catch (error) {
-    res.status(500).json({error: error.message});
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const updateSaleValue = async(req, res) => {
+export const updateSaleValue = async (req, res) => {
   const { id } = req.params;
   const { sale } = req.body;
   try {
     const transactoin = await Transaction.findById(id);
-    if(!transactoin) throw new Error(`Failed to fetch Transaction`);
+    if (!transactoin) throw new Error(`Failed to fetch Transaction`);
     transactoin.sale = Number(sale);
     await transactoin.save();
 
-    res.status(200).json({ message: "Update Sale of Transaction"})
+    const currentDate = new Date();
+    await lineNotify(
+      `\nข้อมูล ณ วันที่ : ${currentDate.toLocaleDateString("th-TH", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })}\nยอดขาย: ${transactoin.sale}\nต้นทุนทั้งหมด: ${
+        transactoin.totalMargin
+      }\nกำไร: ${transactoin.sale - transactoin.totalMargin}
+      `
+    );
+    res.status(200).json({ message: "Update Sale of Transaction" });
   } catch (error) {
-    res.status(500).json({error: error.message});
+    res.status(500).json({ error: error.message });
   }
-}
+};
