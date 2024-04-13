@@ -11,8 +11,6 @@ export const lineNotify = async(message) => {
             },
             data: `message=${message}`
         })
-
-        console.log(`Line Notift respones: ${response}`);
     } catch (error) {
         console.log(error);
     }

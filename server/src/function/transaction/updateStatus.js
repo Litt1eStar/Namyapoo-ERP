@@ -5,5 +5,6 @@ export const _updateStatus = async (id) => {
     transaction.status = true;
     await transaction.save();
 
+    
     return transaction;
 }
