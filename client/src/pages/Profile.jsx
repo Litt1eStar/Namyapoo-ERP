@@ -59,9 +59,17 @@ const Profile = () => {
         color="success"
         variant="contained"
         sx={{ width: "23%", marginX: "auto", marginTop: 5}}
-        onClick={()=>navigate('/dashboard')}
+        onClick={()=>navigate('/dashboard/accounting')}
       >
-        Dashboard
+        Dashboard (การเงิน)
+      </Button>
+      <Button
+        color="primary"
+        variant="contained"
+        sx={{ width: "23%", marginX: "auto", marginTop: 5}}
+        onClick={()=>navigate('/dashboard/stock')}
+      >
+        Dashboard (สินค้า)
       </Button>
 
     </Stack>

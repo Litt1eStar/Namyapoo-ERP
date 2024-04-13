@@ -144,6 +144,7 @@ export const getAllAccDataByYear = async (req, res) => {
 
     //total sales
     accData_filterd_by_year.forEach((item) => {
+      console.log(item)
       const date = new Date(item.date);
       const month = date.toLocaleString("en-US", { month: "long" });
       monthlyTotalValue[month] += item.total_value;
