@@ -12,6 +12,7 @@ import Inventory from "./pages/Inventory";
 import StockHistory from "./pages/StockHistory";
 import Dashboard from "./pages/Dashboard";
 import Accounting from "./pages/Accounting";
+import WorkspaceHistory from "./pages/WorkspaceHistory";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -27,7 +28,8 @@ const App = () => {
         <Route path="/transaction/:transaction_id" element={authUser ? <Transaction /> : <Navigate to='/login' />} />
         <Route path="/profile" element={authUser ? <Profile /> : <Navigate to='/login' />} />
         <Route path="/inventory" element={authUser ? <Inventory /> : <Navigate to='/login' />} />
-        <Route path="/stock-history" element={authUser ? <StockHistory /> : <Navigate to='/login' />} />
+        <Route path="/history/stock" element={authUser ? <StockHistory /> : <Navigate to='/login' />} />
+        <Route path="/history/workspace" element={authUser ? <WorkspaceHistory /> : <Navigate to='/login' />} />
       </Routes>
       <Toaster toastOptions={{
         duration: 2000
