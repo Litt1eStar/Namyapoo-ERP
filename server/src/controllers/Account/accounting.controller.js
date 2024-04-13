@@ -82,12 +82,13 @@ export const getItemByFilteringDate = async (req, res) => {
 export const getAllAccDataByYear = async (req, res) => {
   const { year } = req.params;
   const user_id = req.user.id;
-
   if(!year || !user_id) return res.status(400).json({ error: "Credential Not Complete"});
   
   try {
-    const user = await User.findOne({ ref_user_id: user_id });
-    if (!user) throw new Error(`User not existed`);
+    const user = await User.findOne({ref_user_id: user_id});
+    if (!user){
+      user = await User.create({ref_user_id: user_id});
+    }
 
     const accData_from_user = await Accounting.find({ user_id: user._id });
     if (!accData_from_user) throw new Error(`Data not Found on This User`);

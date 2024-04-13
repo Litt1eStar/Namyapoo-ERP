@@ -51,6 +51,8 @@ export const getDataByYear = async (req, res) => {
   const user_id = req.user.id;
   const { year, product } = req.params;
 
+  console.log(user_id);
+  
   try {
     const user = await User.findById(user_id);
     if (!user) return res.status(400).json({ error: "Token not validate" });

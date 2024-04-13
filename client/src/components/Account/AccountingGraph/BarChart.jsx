@@ -79,21 +79,21 @@ const BarChart = () => {
     datasets: [
       {
         label: "ต้นทุน",
-        data: accData ? accData.total_margin : null,
+        data: accData ? accData.total_margin : [0,0,0,0,0,0,0,0,0,0,0,0],
         backgroundColor: ["#99CCFF"], // Blue color for positive margin, pink for negative margin
         borderColor: ["#99CCFF"],
         borderWidth: 4,
       },
       {
         label: "กำไร",
-        data: accData ? accData.total_profit : null,
+        data: accData ? accData.total_profit : [0,0,0,0,0,0,0,0,0,0,0,0],
         backgroundColor: ["green"], // Green for positive profit, red for negative profit
         borderColor: ["green"],
         borderWidth: 4,
       },
       {
         label: "ยอดขาย",
-        data: accData ? accData.total_value : null,
+        data: accData ? accData.total_value : [0,0,0,0,0,0,0,0,0,0,0,0],
         backgroundColor: "#FF6633", // Orange color for sales
         borderColor: "#FF6633",
 
@@ -101,7 +101,8 @@ const BarChart = () => {
       },
     ],
   };
-
+  console.log(month, year);
+  
   const month_data = {
     labels: [
       "สัปดาห์ที่ 1",
