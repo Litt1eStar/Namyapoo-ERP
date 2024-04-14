@@ -91,7 +91,7 @@ import {
           <Button variant="text" color="inherit" onClick={()=>navigate('/')} sx={{ width: '50%', marginBottom: '30px'}}>
             <HomeIcon />
           </Button>
-          <Button color="inherit" sx={{ width: '50%'}} onClick={()=>navigate('/stock-history')}>History</Button>
+          <Button color="inherit" sx={{ width: '50%'}} onClick={()=>navigate('/history/stock')}>History</Button>
         </Stack>
       
         <Button variant="outlined" color="info" onClick={handleOpen} sx={{ width: '100%'}}>

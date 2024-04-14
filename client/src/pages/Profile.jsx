@@ -48,13 +48,30 @@ const Profile = () => {
         บัญชีร้านค้า
       </Button>
       <Button
+        color="inherit"
+        variant="contained"
+        sx={{ width: "22%", marginX: "auto", marginTop: 5}}
+        onClick={()=>navigate('/history/workspace')}
+      >
+        ประวัติธุรกรรม
+      </Button>
+      <Button
         color="success"
         variant="contained"
-        sx={{ width: "20%", marginX: "auto", marginTop: 5}}
-        onClick={()=>navigate('/dashboard')}
+        sx={{ width: "23%", marginX: "auto", marginTop: 5}}
+        onClick={()=>navigate('/dashboard/accounting')}
       >
-        Dashboard
+        Dashboard (การเงิน)
       </Button>
+      <Button
+        color="primary"
+        variant="contained"
+        sx={{ width: "23%", marginX: "auto", marginTop: 5}}
+        onClick={()=>navigate('/dashboard/stock')}
+      >
+        Dashboard (สินค้า)
+      </Button>
+
     </Stack>
   );
 };

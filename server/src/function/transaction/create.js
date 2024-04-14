@@ -50,10 +50,6 @@ export const create = async (orders, workspace_id, user_id, area_price) => {
 
   await updateCache("Product", "products", user_id);
   await updateCache("StockHistory", "stockHistorys", user_id);
-  await lineNotify(
-    `Create New Transaction \n ต้นทุนทั้งหมด: ${newTransaction.totalMargin} บาท`
-  );
 
-  
   return newTransaction;
 };
