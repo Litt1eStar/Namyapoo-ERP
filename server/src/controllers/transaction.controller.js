@@ -86,13 +86,15 @@ export const updateStatus = async (req, res) => {
   }
 };
 
+//HERE 
 export const updateSaleValue = async (req, res) => {
   const { id } = req.params;
-  const { sale } = req.body;
+  const { sale, other_expenses } = req.body;
   try {
     const transactoin = await Transaction.findById(id);
     if (!transactoin) throw new Error(`Failed to fetch Transaction`);
     transactoin.sale = Number(sale);
+    transactoin.other_expenses = Number(other_expenses);
     await transactoin.save();
 
     const currentDate = new Date();

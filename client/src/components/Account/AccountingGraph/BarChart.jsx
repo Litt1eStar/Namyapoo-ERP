@@ -78,10 +78,11 @@ const BarChart = () => {
     ],
     datasets: [
       {
-        label: "ต้นทุน",
-        data: accData ? accData.total_margin : [0,0,0,0,0,0,0,0,0,0,0,0],
-        backgroundColor: ["#99CCFF"], // Blue color for positive margin, pink for negative margin
-        borderColor: ["#99CCFF"],
+        label: "ยอดขาย",
+        data: accData ? accData.total_value : [0,0,0,0,0,0,0,0,0,0,0,0],
+        backgroundColor: "#FF6633", // Orange color for sales
+        borderColor: "#FF6633",
+
         borderWidth: 4,
       },
       {
@@ -92,13 +93,14 @@ const BarChart = () => {
         borderWidth: 4,
       },
       {
-        label: "ยอดขาย",
-        data: accData ? accData.total_value : [0,0,0,0,0,0,0,0,0,0,0,0],
-        backgroundColor: "#FF6633", // Orange color for sales
-        borderColor: "#FF6633",
-
+        label: "ต้นทุน",
+        data: accData ? accData.total_margin : [0,0,0,0,0,0,0,0,0,0,0,0],
+        backgroundColor: ["#99CCFF"], // Blue color for positive margin, pink for negative margin
+        borderColor: ["#99CCFF"],
         borderWidth: 4,
       },
+
+
     ],
   };
   console.log(month, year);
@@ -112,10 +114,11 @@ const BarChart = () => {
     ],
     datasets: [
       {
-        label: "ต้นทุน",
-        data: accDataMonth ? accDataMonth.map(data => data.total_margin) : 0,
-        backgroundColor: ["#99CCFF"], // Blue color for positive margin, pink for negative margin
-        borderColor: ["#99CCFF"],
+        label: "ยอดขาย",
+        data: accDataMonth ? accDataMonth.map(data => data.total_value) : 0,
+        backgroundColor: "#FF6633", // Orange color for sales
+        borderColor: "#FF6633",
+
         borderWidth: 4,
       },
       {
@@ -126,13 +129,14 @@ const BarChart = () => {
         borderWidth: 4,
       },
       {
-        label: "ยอดขาย",
-        data: accDataMonth ? accDataMonth.map(data => data.total_value) : 0,
-        backgroundColor: "#FF6633", // Orange color for sales
-        borderColor: "#FF6633",
-
+        label: "ต้นทุน",
+        data: accDataMonth ? accDataMonth.map(data => data.total_margin) : 0,
+        backgroundColor: ["#99CCFF"], // Blue color for positive margin, pink for negative margin
+        borderColor: ["#99CCFF"],
         borderWidth: 4,
       },
+
+
     ],
   };
 
