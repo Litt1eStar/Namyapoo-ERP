@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import Accounting from "./pages/Accounting";
 import WorkspaceHistory from "./pages/WorkspaceHistory";
 import StockDashboard from "./pages/StockDashboard";
+import LeftOverPage from "./pages/LeftOverPage";
 
 const App = () => {
   const { authUser } = useAuthContext();
@@ -32,6 +33,8 @@ const App = () => {
         <Route path="/inventory" element={authUser ? <Inventory /> : <Navigate to='/login' />} />
         <Route path="/history/stock" element={authUser ? <StockHistory /> : <Navigate to='/login' />} />
         <Route path="/history/workspace" element={authUser ? <WorkspaceHistory /> : <Navigate to='/login' />} />
+        <Route path="/product/updateLeftOver" element={authUser ? <LeftOverPage /> : <Navigate to='/login' />} />
+        
       </Routes>
       <Toaster toastOptions={{
         duration: 2000

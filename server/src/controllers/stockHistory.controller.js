@@ -50,8 +50,6 @@ export const create = async (req, res) => {
 export const getDataByYear = async (req, res) => {
   const user_id = req.user.id;
   const { year, product } = req.params;
-
-  console.log(user_id);
   
   try {
     const user = await User.findById(user_id);
@@ -93,9 +91,12 @@ export const getDataByYear = async (req, res) => {
       if (!isNaN(date.getTime())) {
         // Check if date is valid
         const monthName = date.toLocaleString("en-US", { month: "long" });
-        monthlyTotalValue[monthName] += parseInt(item.amount); // Assuming 'amount' is the value to sum up
+        if(item.stock_type === "Export"){
+          monthlyTotalValue[monthName] += parseInt(item.amount);
+        }else if(item.stock_type === "Import"){
+          monthlyTotalValue[monthName] -= parseInt(item.amount);
+        }
       }
-      // Assuming 'amount' is the value to sum up
     });
 
     const arr_totalValue = Object.values(monthlyTotalValue);
@@ -110,7 +111,6 @@ export const getDataFromMonthAndYear = async (req, res) => {
   const { year, month, product } = req.params;
   const user_id = req.user.id;
 
-  
   try {
     const user = await User.findById(user_id);
     if (!user) throw new Error(`User not existed`);
@@ -127,18 +127,18 @@ export const getDataFromMonthAndYear = async (req, res) => {
     const filteredHistorys = historys.filter((history) => {
       const [day, month, year] = history.createdAt.split('/');
       const historyDate = new Date(`${year}-${month}-${day}`); 
-      
-      if(product!=="all"){
+
+      if(product !== "all"){
         return (
           historyDate.getMonth() === startDate.getMonth() &&
           historyDate.getFullYear() === startDate.getFullYear() &&
           history.product_name === product
         );
-      }else{
-        return(
-        historyDate.getMonth() === startDate.getMonth() &&
-        historyDate.getFullYear() === startDate.getFullYear()
-        )
+      } else {
+        return (
+          historyDate.getMonth() === startDate.getMonth() &&
+          historyDate.getFullYear() === startDate.getFullYear()
+        );
       }
     });
 
@@ -153,10 +153,14 @@ export const getDataFromMonthAndYear = async (req, res) => {
 
       if (!weeklyTotal[weekNumber]) {
         weeklyTotal[weekNumber] = {
-          total_amount: parseInt(history.amount), // Assuming 'amount' is the value to sum up
+          total_amount: 0, // Initialize total amount
         };
-      } else {
+      }
+
+      if (history.stock_type === "Export") {
         weeklyTotal[weekNumber].total_amount += parseInt(history.amount);
+      } else if (history.stock_type === "Import") {
+        weeklyTotal[weekNumber].total_amount -= parseInt(history.amount);
       }
     });
 

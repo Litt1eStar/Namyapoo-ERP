@@ -80,7 +80,7 @@ export const updateProductAmountByType = async (req, res) => {
   const { id } = req.params;
   const user_id = req.user.id;
   try {
-    const product = await _updateAmountByType(id, newAmount, type);
+    const product = await _updateAmountByType(id, newAmount, type, user_id);
     await updateCache(user_id);
     res.status(200).json(product);
   } catch (error) {
