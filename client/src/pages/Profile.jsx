@@ -71,6 +71,14 @@ const Profile = () => {
       >
         Dashboard (สินค้า)
       </Button>
+      <Button
+        color="warning"
+        variant="contained"
+        sx={{ width: "25%", marginX: "auto", marginTop: 5}}
+        onClick={()=>navigate('/product/updateLeftOver')}
+      >
+        อัพเดทสินค้าต่อวัน
+      </Button>
 
     </Stack>
   );
