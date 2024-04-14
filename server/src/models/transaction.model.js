@@ -29,6 +29,10 @@ const schema = new mongoose.Schema({
     sale: {
         type: Number,
         default: 0
+    },
+    other_expenses: {
+        type: Number,
+        default: 0
     }
 }, {timestamps: true})
 

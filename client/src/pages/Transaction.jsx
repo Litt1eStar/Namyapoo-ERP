@@ -22,6 +22,7 @@ const Transaction = () => {
   const { transaction_id } = useParams();
   const [transactions, setTransactions] = useState(null);
   const [sales, setSales] = useState("");
+  const [expenses, setExpenses] = useState("");
   const navigate = useNavigate();
   const fetchTransactoin = async () => {
     try {
@@ -87,7 +88,7 @@ const Transaction = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ sale: Number(sales) }),
+          body: JSON.stringify({ sale: Number(sales), other_expenses: expenses }),
         }
       );
       const transaction_sales_data = await transaction_sales_res.json();
@@ -160,6 +161,11 @@ const Transaction = () => {
             value={sales}
             onChange={(e) => setSales(e.target.value)}
           />
+          <TextField
+            label="ค่าใช้จ่ายอื่นๆ"
+            value={expenses}
+            onChange={(e) => setExpenses(e.target.value)}
+          />
           <Button variant="contained" color="success" onClick={handleDone}>
             DONE
           </Button>
@@ -181,6 +187,9 @@ const Transaction = () => {
             กำไร:{" "}
             {(transactions.sale - transactions.totalMargin).toLocaleString()}{" "}
             บาท
+          </Typography>
+          <Typography variant="h6" color="black" fontWeight={400}>
+            ค่าใช้จ่ายอื่นๆ: {transactions.other_expenses.toLocaleString()} บาท
           </Typography>
         </Box>
       )}

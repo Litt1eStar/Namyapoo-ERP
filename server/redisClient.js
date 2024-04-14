@@ -6,6 +6,7 @@ var redisPort = 6372;
   redisClient = redis.createClient({
     host: "https://namyapoo-event-margin-calculator.onrender.com/",
     port: redisPort,
+    // url: process.env.REDIS_URL,
     reconnectStrategy: function (retries) {
       if (retries > 20) {
         console.log(
