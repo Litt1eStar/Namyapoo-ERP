@@ -65,7 +65,7 @@ const Transaction = () => {
         body: JSON.stringify({
           date: formattedDate,
           total_value: Number(sales),
-          total_margin: transactions.totalMargin,
+          total_margin: Number(transactions.totalMargin) + Number(expenses),
         }),
       });
       const acc_data = await acc_res.json();
