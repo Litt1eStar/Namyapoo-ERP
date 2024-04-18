@@ -4,6 +4,7 @@ import { User } from "../../models/Account/user.model.js";
 
 export const create = async (req, res) => {
   const { date, total_value, total_margin } = req.body;
+  console.log(total_margin)
   const user_id = req.user.id;
   console.log(user_id);
   if (!date || !total_value || !total_margin || !user_id)

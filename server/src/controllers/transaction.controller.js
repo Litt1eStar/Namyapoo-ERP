@@ -95,6 +95,7 @@ export const updateSaleValue = async (req, res) => {
     if (!transactoin) throw new Error(`Failed to fetch Transaction`);
     transactoin.sale = Number(sale);
     transactoin.other_expenses = Number(other_expenses);
+    transactoin.totalMargin = Number(transactoin.totalMargin) + transactoin.other_expenses;
     await transactoin.save();
 
     const currentDate = new Date();
