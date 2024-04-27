@@ -18,7 +18,8 @@ const Home = () => {
       if (data.error) {
         throw new Error(data.error);
       }
-      setWorkspaces(data);
+      const workspace_notDone = data.filter(data => {return data.status !== 'done'})
+      setWorkspaces(workspace_notDone);
     } catch (error) {
       toast.error(error.message);
     }
@@ -46,6 +47,12 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const loggedIn = sessionStorage.getItem('loggedIn');
+    if (loggedIn === 'true') {
+      sessionStorage.removeItem('loggedIn');
+      window.location.reload();
+    }
+
     fetchWorkspaceFromDB();
   }, []);
 

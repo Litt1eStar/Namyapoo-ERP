@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { dbInventory } from "../../db.js";
 
 const schema = new mongoose.Schema({
     name:{
@@ -6,9 +7,10 @@ const schema = new mongoose.Schema({
         required: true
     },
     status:{
-        type: Boolean,
+        type: String,
         required: true,
-        default: false
+        enum: ['done', 'not_done', 'in_progress'],
+        default: 'not_done'
     },
     user_id:{
         type: mongoose.Schema.Types.ObjectId,
@@ -16,6 +18,6 @@ const schema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-const Workspace = mongoose.model("Workspace", schema);
+const Workspace = dbInventory.model("Workspace", schema);
 
 export default Workspace;

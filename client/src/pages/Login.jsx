@@ -28,6 +28,7 @@ const Login = () => {
         throw new Error(data.error);
       }
 
+      sessionStorage.setItem('loggedIn', 'true');
       setAuthUser(data);
       setForm(null);
     } catch (error) {

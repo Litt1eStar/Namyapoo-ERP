@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { dbInventory } from "../../db.js";
 
 const schema = new mongoose.Schema({
     product_name: {
@@ -23,6 +24,6 @@ const schema = new mongoose.Schema({
     }
 });
 
-const StockHistory = mongoose.model("StockHistoyr", schema);
+const StockHistory = dbInventory.model("StockHistoyr", schema);
 
 export default StockHistory;

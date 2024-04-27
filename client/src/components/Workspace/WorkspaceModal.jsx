@@ -36,6 +36,7 @@ const WorkspaceModal = ({createWorkspace, setForm, form}) => {
       >
         <Box sx={style}>
           <TextField sx={{ width: "100%" }} placeholder="พิมพ์ชื่อ workspace" value={form.name} onChange={(e)=>setForm({name: e.target.value})} />
+          <Button  onClick={(e)=>setForm({name: `Workspace: ${new Date().toLocaleString('th-TH', { day: '2-digit',month: 'long', year: 'numeric'})}` })} sx={{ width: '30%', mx: '35%', mt: 3}}>DEFAULT</Button>
           <Button
             variant="contained"
             color="inherit"

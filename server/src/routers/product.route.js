@@ -9,14 +9,14 @@ import {
   updateProductAmountByType,
   getProductById,
 } from "../controllers/product.controller.js";
-
+import { productCaching } from "../caching/product.caching.js";
 const router = express.Router();
 
 router.post("/create", verifyToken, createProduct);
-router.get("/getAllProduct", verifyToken, getAllProduct);
-router.get("/:id", getProductById);
-router.put("/edit/:id", editProduct);
-router.put("/updateProductAmountByType/:id", updateProductAmountByType)
-router.delete("/delete/:id", deleteProduct);
+router.get("/getAllProduct",  verifyToken, productCaching, getAllProduct);
+router.get("/:id", verifyToken, getProductById);
+router.put("/edit/:id", verifyToken, editProduct);
+router.put("/updateProductAmountByType/:id", verifyToken, updateProductAmountByType)
+router.delete("/delete/:id", verifyToken, deleteProduct);
 
 export default router;

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { dbInventory } from "../../db.js";
 
 const schema = new mongoose.Schema({
     username:{
@@ -11,6 +12,6 @@ const schema = new mongoose.Schema({
     }
 }, {timestamp: true})
 
-const User = mongoose.model("User", schema)
+const User = dbInventory.model("User", schema)
 
 export default User;

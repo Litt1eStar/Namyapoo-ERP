@@ -6,7 +6,7 @@ export const getAllWorkspaceFromDb = async(user_id) => {
     if (!user)
       throw new Error('User is not existed in database')
 
-    const workspaces = await Workspace.find({ user_id });
+    const workspaces = await Workspace.find({ user_id, status: { $ne: "done"} });
     if (!workspaces)
       throw new Error('Failed to get workspaces')
 
