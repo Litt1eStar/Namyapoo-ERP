@@ -86,29 +86,38 @@ export const updateStatus = async (req, res) => {
   }
 };
 
-//HERE 
+//HERE
 export const updateSaleValue = async (req, res) => {
   const { id } = req.params;
   const { sale, other_expenses } = req.body;
+  const user = req.user;
+  console.log(user);
+
   try {
     const transactoin = await Transaction.findById(id);
     if (!transactoin) throw new Error(`Failed to fetch Transaction`);
     transactoin.sale = Number(sale);
     transactoin.other_expenses = Number(other_expenses);
-    transactoin.totalMargin = Number(transactoin.totalMargin) + transactoin.other_expenses;
+    transactoin.totalMargin =
+      Number(transactoin.totalMargin) + transactoin.other_expenses;
     await transactoin.save();
 
-    const currentDate = new Date();
-    await lineNotify(
-      `\nข้อมูล ณ วันที่ : ${currentDate.toLocaleDateString("th-TH", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      })}\nยอดขาย: ${transactoin.sale}\nต้นทุนทั้งหมด: ${
-        transactoin.totalMargin
-      }\nกำไร: ${transactoin.sale - transactoin.totalMargin}
-      `
+    const profitPercentage = Math.floor(
+      ((transactoin.sale - transactoin.totalMargin) / transactoin.totalMargin) * 100
     );
+    const currentDate = new Date();
+    const message = `${currentDate.toLocaleDateString("th-TH", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })}\n-ยอดขาย: ${transactoin.sale.toLocaleString()} บาท\n-ต้นทุนทั้งหมด: ${
+      transactoin.totalMargin.toLocaleString()
+    } บาท\n-กำไร: ${
+      (transactoin.sale - transactoin.totalMargin).toLocaleString()
+    } บาท\n💰สรุป -> กำไร ${profitPercentage}% จากยอดขาย`;
+
+    const encodedMessage = encodeURIComponent(message); 
+    await lineNotify(encodedMessage);
     res.status(200).json({ message: "Update Sale of Transaction" });
   } catch (error) {
     res.status(500).json({ error: error.message });
