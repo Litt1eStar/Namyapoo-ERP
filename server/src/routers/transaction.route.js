@@ -10,5 +10,5 @@ router.get('/getTransaction', verifyToken, transactionCaching, getTransaction)
 router.get('/getFrom/:workspace_id', getTransactionByWorkspaceId)
 router.get('/:id', getTransactionById)
 router.put('/:id', updateStatus);
-router.put('/sales/:id', updateSaleValue);
+router.put('/sales/:id', verifyToken, updateSaleValue);
 export default router;
